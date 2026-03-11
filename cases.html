@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>成功案例 - 中嘉锦铭国际贸易</title>
+  <meta name="description" content="查看中嘉锦铭国际贸易的成功案例，见证企业出海的成功之路。">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    .cases-section { padding: 140px 0 80px; background: white; }
+    .cases-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; }
+    .case-card { background: white; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow); transition: all 0.3s ease; }
+    .case-card:hover { transform: translateY(-10px); box-shadow: var(--shadow-lg); }
+    .case-image { height: 220px; overflow: hidden; position: relative; }
+    .case-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+    .case-card:hover .case-image img { transform: scale(1.1); }
+    .case-gallery { display: flex; gap: 10px; height: 220px; }
+    .case-gallery img { flex: 1; height: 100%; object-fit: cover; border-radius: 8px; transition: transform 0.3s ease; }
+    .case-gallery img:hover { transform: scale(1.05); }
+    .case-content { padding: 28px; }
+    .case-tag { display: inline-block; padding: 6px 14px; background: var(--primary-light); color: var(--primary); font-size: 12px; font-weight: 500; border-radius: 20px; margin-bottom: 12px; }
+    .case-title { font-size: 20px; font-weight: 600; color: var(--black); margin-bottom: 12px; }
+    .case-desc { font-size: 14px; color: var(--gray); line-height: 1.7; margin-bottom: 20px; }
+    .case-stats { display: flex; gap: 24px; padding-top: 20px; border-top: 1px solid var(--gray-light); }
+    .case-stat { text-align: center; }
+    .case-stat-value { font-size: 24px; font-weight: 700; color: var(--primary); }
+    .case-stat-label { font-size: 12px; color: var(--gray); }
+    
+    .testimonials-section { padding: 80px 0; background: var(--gray-light); }
+    .testimonials-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; }
+    .testimonial-card { background: white; border-radius: var(--radius-lg); padding: 32px; box-shadow: var(--shadow); }
+    .testimonial-quote { font-size: 16px; color: var(--black); line-height: 1.8; margin-bottom: 24px; font-style: italic; }
+    .testimonial-author { display: flex; align-items: center; gap: 16px; }
+    .testimonial-avatar { width: 56px; height: 56px; border-radius: 50%; object-fit: cover; }
+    .testimonial-info h4 { font-size: 16px; font-weight: 600; color: var(--black); }
+    .testimonial-info p { font-size: 14px; color: var(--gray); }
+    
+    @media (max-width: 1024px) {
+      .cases-grid { grid-template-columns: repeat(2, 1fr); }
+      .testimonials-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .cases-grid { grid-template-columns: 1fr; }
+    }
+    
+    .results-section { padding: 80px 0; background: white; }
+    .results-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .result-item { border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow); transition: transform 0.3s ease; }
+    .result-item:hover { transform: translateY(-5px); }
+    .result-item img { width: 100%; height: 200px; object-fit: cover; transition: transform 0.5s ease; }
+    .result-item:hover img { transform: scale(1.05); }
+    
+    @media (max-width: 1024px) {
+      .results-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 768px) {
+      .results-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar scrolled">
+    <div class="container navbar-inner">
+      <a href="index.html" class="logo">
+        <img src="images/logo.png" alt="中嘉锦铭国际贸易 Logo" class="logo-img">
+        <span class="logo-text" style="color: var(--black);">中嘉锦铭国际贸易</span>
+      </a>
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link" style="color: var(--black);">首页</a></li>
+        <li><a href="about.html" class="nav-link" style="color: var(--black);">关于我们</a></li>
+        <li><a href="domestic.html" class="nav-link" style="color: var(--black);">国内赋能</a></li>
+        <li><a href="overseas.html" class="nav-link" style="color: var(--black);">海外促进</a></li>
+        <li><a href="keyway.html" class="nav-link" style="color: var(--black);">KeyWay会员</a></li>
+        <li><a href="cases.html" class="nav-link active" style="color: var(--black);">成功案例</a></li>
+        <li><a href="contact.html" class="nav-link" style="color: var(--black);">联系我们</a></li>
+      </ul>
+      <div class="nav-actions">
+        <div class="lang-switch" style="background: var(--gray-light); color: var(--black);"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg><span>EN</span></div>
+        <a href="contact.html" class="btn btn-primary" style="padding: 10px 20px; font-size: 14px;">立即咨询</a>
+      </div>
+      <div class="mobile-menu-btn" onclick="toggleMobileMenu()"><span style="background: var(--black);"></span><span style="background: var(--black);"></span><span style="background: var(--black);"></span></div>
+    </div>
+  </nav>
+
+  <header class="page-header" style="padding-top: 140px;">
+    <div class="container page-header-content">
+      <span class="page-tag">SUCCESS STORIES</span>
+      <h1 class="page-title">成功案例</h1>
+      <p class="page-subtitle">见证企业出海的成功之路</p>
+    </div>
+  </header>
+
+  <section class="cases-section">
+    <div class="container">
+      <div class="cases-grid">
+        <div class="case-card reveal">
+          <div class="case-gallery">
+            <img src="images/product-1.jpg" alt="制造业产品展示" loading="lazy">
+            <img src="images/event-1.jpg" alt="非洲市场活动场景" loading="lazy">
+            <img src="images/meeting-1.jpg" alt="客户对接会议" loading="lazy">
+          </div>
+          <div class="case-content">
+            <span class="case-tag">制造业</span>
+            <h3 class="case-title">中小微企业非洲拓客</h3>
+            <p class="case-desc">帮助某制造业企业成功开拓非洲市场，通过我们的平台对接了多个非洲国家的优质客户，实现了业务的快速增长。</p>
+            <div class="case-stats">
+              <div class="case-stat"><div class="case-stat-value">300%</div><div class="case-stat-label">出口增长</div></div>
+              <div class="case-stat"><div class="case-stat-value">5+</div><div class="case-stat-label">非洲国家</div></div>
+              <div class="case-stat"><div class="case-stat-value">20+</div><div class="case-stat-label">合作客户</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="case-card reveal">
+          <div class="case-gallery">
+            <img src="images/team-1.jpg" alt="产业带团队合影" loading="lazy">
+            <img src="images/meeting-2.jpg" alt="海外营销中心会议" loading="lazy">
+            <img src="images/event-2.jpg" alt="集群出海活动" loading="lazy">
+          </div>
+          <div class="case-content">
+            <span class="case-tag">产业带</span>
+            <h3 class="case-title">产业带集群出海</h3>
+            <p class="case-desc">协助湖南某产业带集体出海，建立海外营销中心，实现产业链协同出海，降低单个企业的出海成本。</p>
+            <div class="case-stats">
+              <div class="case-stat"><div class="case-stat-value">30+</div><div class="case-stat-label">企业数量</div></div>
+              <div class="case-stat"><div class="case-stat-value">2</div><div class="case-stat-label">海外中心</div></div>
+              <div class="case-stat"><div class="case-stat-value">50%</div><div class="case-stat-label">成本降低</div></div>
+            </div>
+          </div>
+        </div>
+        <div class="case-card reveal">
+          <div class="case-gallery">
+            <img src="images/product-2.jpg" alt="海外工厂产品" loading="lazy">
+            <img src="images/meeting-3.jpg" alt="投资落地会议" loading="lazy">
+            <img src="images/team-2.jpg" alt="海外团队建设" loading="lazy">
+          </div>
+          <div class="case-content">
+            <span class="case-tag">投资</span>
+            <h3 class="case-title">海外投资落地</h3>
+            <p class="case-desc">为某企业提供海外投资全套服务，从选址、注册到运营，成功设立海外工厂，实现本地化生产。</p>
+            <div class="case-stats">
+              <div class="case-stat"><div class="case-stat-value">3个月</div><div class="case-stat-label">落地周期</div></div>
+              <div class="case-stat"><div class="case-stat-value">100+</div><div class="case-stat-label">当地员工</div></div>
+              <div class="case-stat"><div class="case-stat-value">$5M</div><div class="case-stat-label">投资规模</div></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="testimonials-section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">客户评价</span>
+        <h2 class="section-title">听听客户怎么说</h2>
+        <p class="section-desc">客户的认可是我们前进的动力</p>
+      </div>
+      <div class="testimonials-grid">
+        <div class="testimonial-card reveal">
+          <p class="testimonial-quote">"中嘉锦铭国际贸易为我们提供了全方位的出海支持，从市场调研到客户对接，每一步都有专业团队跟进。现在我们的产品在非洲市场已经站稳了脚跟。"</p>
+          <div class="testimonial-author">
+            <img src="images/client-1.jpg" alt="张总头像" class="testimonial-avatar" loading="lazy">
+            <div class="testimonial-info"><h4>张总</h4><p>某制造业企业 CEO</p></div>
+          </div>
+        </div>
+        <div class="testimonial-card reveal">
+          <p class="testimonial-quote">"通过KeyWay会员卡，我们享受到了非常便捷的海外服务。一卡在手，走到哪里都有保障，大大降低了我们的出海风险和成本。"</p>
+          <div class="testimonial-author">
+            <img src="images/client-2.jpg" alt="李总头像" class="testimonial-avatar" loading="lazy">
+            <div class="testimonial-info"><h4>李总</h4><p>某贸易公司总经理</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="results-section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">项目成果</span>
+        <h2 class="section-title">项目成果展示</h2>
+        <p class="section-desc">我们的服务成果，客户的成功见证</p>
+      </div>
+      <div class="results-grid">
+        <div class="result-item reveal">
+          <img src="images/team-3.jpg" alt="团队协作成果" loading="lazy">
+        </div>
+        <div class="result-item reveal">
+          <img src="images/team-4.jpg" alt="项目团队合影" loading="lazy">
+        </div>
+        <div class="result-item reveal">
+          <img src="images/event-3.jpg" alt="成功活动场景" loading="lazy">
+        </div>
+        <div class="result-item reveal">
+          <img src="images/product-3.jpg" alt="产品交付成果" loading="lazy">
+        </div>
+        <div class="result-item reveal">
+          <img src="images/meeting-1.jpg" alt="商务会议成果" loading="lazy">
+        </div>
+        <div class="result-item reveal">
+          <img src="images/meeting-2.jpg" alt="合作洽谈场景" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-section" style="padding: 80px 0; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); text-align: center;">
+    <div class="container">
+      <h2 class="cta-title reveal">成为我们的下一个成功案例</h2>
+      <p class="cta-desc reveal">加入中嘉锦铭国际贸易，让我们成为您最可靠的出海伙伴</p>
+      <div class="cta-actions reveal">
+        <a href="contact.html" class="btn btn-gold">立即咨询</a>
+        <a href="keyway.html" class="btn btn-outline">了解会员</a>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div><div class="footer-logo"><div class="logo-icon">L</div><span class="footer-logo-text">中嘉锦铭国际贸易</span></div><p class="footer-desc">中非经贸赋能平台与创新促进中心，为企业提供从0到1的出海全周期解决方案。</p></div>
+        <div><h4 class="footer-title">快速链接</h4><ul class="footer-links"><li><a href="index.html" class="footer-link">首页</a></li><li><a href="about.html" class="footer-link">关于我们</a></li><li><a href="domestic.html" class="footer-link">国内赋能服务</a></li><li><a href="overseas.html" class="footer-link">海外促进服务</a></li><li><a href="keyway.html" class="footer-link">KeyWay会员</a></li></ul></div>
+        <div><h4 class="footer-title">服务项目</h4><ul class="footer-links"><li><a href="domestic.html" class="footer-link">十大赋能中心</a></li><li><a href="overseas.html" class="footer-link">十大促进中心</a></li><li><a href="keyway.html" class="footer-link">KeyWay会员卡</a></li><li><a href="contact.html" class="footer-link">企业咨询服务</a></li></ul></div>
+        <div><h4 class="footer-title">联系信息</h4><div class="footer-contact"><div class="footer-contact-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg><span>长沙市雨花区井湾子街道紫金大厦701</span></div><div class="footer-contact-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg><span>18874799625</span></div><div class="footer-contact-item"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg><span>906725387@qq.com</span></div></div></div>
+      </div>
+      <div class="footer-bottom"><p class="footer-copyright">© 2024 中嘉锦铭国际贸易. 保留所有权利.</p><div class="footer-legal"><a href="#">隐私政策</a><a href="#">服务条款</a><a href="admin/login.html">管理后台</a></div></div>
+    </div>
+  </footer>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/main.js"></script>
+  <script>function toggleMobileMenu() { document.querySelector('.nav-menu').classList.toggle('active'); }</script>
+</body>
+</html>
