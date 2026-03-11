@@ -1,0 +1,1802 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>管理后台 - 中嘉锦铭国际贸易</title>
+  <link rel="stylesheet" href="../css/style.css">
+  <link href="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.snow.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/quill@1.3.7/dist/quill.min.js"></script>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: "PingFang SC", "Microsoft YaHei", sans-serif; background: #f5f7fa; }
+    
+    /* 侧边栏 */
+    .admin-layout { display: flex; min-height: 100vh; }
+    .sidebar { width: 260px; background: #1a1a2e; color: white; position: fixed; height: 100vh; overflow-y: auto; }
+    .sidebar-header { padding: 24px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+    .sidebar-logo { display: flex; align-items: center; gap: 12px; }
+    .sidebar-logo .logo-icon { width: 40px; height: 40px; background: linear-gradient(135deg, #0055b8, #003d8a); border-radius: 10px; display: flex; align-items: center; justify-content: center; font-weight: 700; }
+    .sidebar-logo span { font-size: 16px; font-weight: 600; }
+    .sidebar-nav { padding: 16px 0; }
+    .nav-section { margin-bottom: 8px; }
+    .nav-section-title { padding: 12px 24px; font-size: 12px; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 1px; }
+    .nav-item { display: flex; align-items: center; gap: 12px; padding: 12px 24px; color: rgba(255,255,255,0.7); cursor: pointer; transition: all 0.3s ease; }
+    .nav-item:hover, .nav-item.active { background: rgba(255,255,255,0.1); color: white; }
+    .nav-item svg { width: 20px; height: 20px; }
+    
+    /* 主内容区 */
+    .main-content { flex: 1; margin-left: 260px; }
+    .header { background: white; padding: 16px 32px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 10px rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 100; }
+    .header-title { font-size: 20px; font-weight: 600; color: #1a1a1a; }
+    .header-actions { display: flex; align-items: center; gap: 16px; }
+    .header-btn { padding: 8px 16px; background: var(--gray-light); border: none; border-radius: 8px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-size: 14px; }
+    .header-btn:hover { background: #e0e0e0; }
+    .user-menu { display: flex; align-items: center; gap: 12px; cursor: pointer; }
+    .user-avatar { width: 36px; height: 36px; background: linear-gradient(135deg, #0055b8, #003d8a); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; font-weight: 600; }
+    
+    /* 内容区域 */
+    .content { padding: 32px; }
+    .page-header { margin-bottom: 32px; }
+    .page-header h2 { font-size: 24px; font-weight: 700; color: #1a1a1a; margin-bottom: 8px; }
+    .page-header p { font-size: 14px; color: #666; }
+    
+    /* 统计卡片 */
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; margin-bottom: 32px; }
+    .stat-card { background: white; border-radius: 12px; padding: 24px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+    .stat-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 16px; }
+    .stat-card-title { font-size: 14px; color: #666; }
+    .stat-card-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+    .stat-card-icon.blue { background: #e6f0ff; color: #0055b8; }
+    .stat-card-icon.green { background: #d4edda; color: #28a745; }
+    .stat-card-icon.orange { background: #fff3cd; color: #f0ad4e; }
+    .stat-card-icon.red { background: #f8d7da; color: #dc3545; }
+    .stat-card-value { font-size: 32px; font-weight: 700; color: #1a1a1a; margin-bottom: 8px; }
+    .stat-card-change { font-size: 13px; color: #28a745; }
+    .stat-card-change.negative { color: #dc3545; }
+    
+    /* 表格 */
+    .card { background: white; border-radius: 12px; box-shadow: 0 2px 10px rgba(0,0,0,0.05); overflow: hidden; }
+    .card-header { padding: 20px 24px; border-bottom: 1px solid #f0f0f0; display: flex; justify-content: space-between; align-items: center; }
+    .card-title { font-size: 16px; font-weight: 600; color: #1a1a1a; }
+    .card-actions { display: flex; gap: 8px; }
+    .btn-sm { padding: 8px 16px; font-size: 13px; border-radius: 6px; border: none; cursor: pointer; }
+    .btn-primary-sm { background: #0055b8; color: white; }
+    .btn-outline-sm { background: white; border: 1px solid #e0e0e0; color: #666; }
+    
+    .table-container { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { padding: 14px 24px; text-align: left; font-size: 14px; }
+    th { background: #f8f9fa; font-weight: 600; color: #666; }
+    td { border-bottom: 1px solid #f0f0f0; color: #1a1a1a; }
+    tr:hover td { background: #f8f9fa; }
+    .status-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 500; }
+    .status-badge.pending { background: #fff3cd; color: #856404; }
+    .status-badge.processing { background: #cce5ff; color: #004085; }
+    .status-badge.completed { background: #d4edda; color: #155724; }
+    .status-badge.cancelled { background: #f8d7da; color: #721c24; }
+    .action-btns { display: flex; gap: 8px; }
+    .action-btn { padding: 6px 12px; font-size: 12px; border-radius: 4px; border: none; cursor: pointer; }
+    .action-btn.view { background: #e6f0ff; color: #0055b8; }
+    .action-btn.edit { background: #fff3cd; color: #856404; }
+    .action-btn.delete { background: #f8d7da; color: #721c24; }
+    
+    /* 分页 */
+    .pagination { display: flex; justify-content: center; gap: 8px; padding: 20px; }
+    .page-btn { padding: 8px 14px; border: 1px solid #e0e0e0; background: white; border-radius: 6px; cursor: pointer; font-size: 13px; }
+    .page-btn:hover { background: #f5f5f5; }
+    .page-btn.active { background: #0055b8; color: white; border-color: #0055b8; }
+    
+    /* 内容编辑 */
+    .editor-tabs { display: flex; gap: 4px; padding: 0 24px; border-bottom: 1px solid #f0f0f0; }
+    .editor-tab { padding: 12px 20px; font-size: 14px; color: #666; cursor: pointer; border-bottom: 2px solid transparent; }
+    .editor-tab:hover { color: #0055b8; }
+    .editor-tab.active { color: #0055b8; border-bottom-color: #0055b8; font-weight: 500; }
+    .editor-content { padding: 24px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+    .form-group label { display: block; font-size: 13px; font-weight: 500; color: #666; margin-bottom: 8px; }
+    .form-group input, .form-group textarea { width: 100%; padding: 12px 16px; border: 1px solid #e0e0e0; border-radius: 8px; font-size: 14px; }
+    .form-group textarea { resize: vertical; min-height: 150px; }
+    
+    /* 模态框样式 */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      opacity: 0;
+      visibility: hidden;
+      transition: all 0.3s ease;
+    }
+    .modal-overlay.show {
+      opacity: 1;
+      visibility: visible;
+    }
+    .modal-content {
+      background: white;
+      border-radius: 16px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+      max-width: 95vw;
+      max-height: 90vh;
+      overflow: hidden;
+      transform: scale(0.9) translateY(20px);
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    .modal-overlay.show .modal-content {
+      transform: scale(1) translateY(0);
+    }
+    .modal-header {
+      padding: 24px 32px;
+      border-bottom: 1px solid #f0f0f0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(135deg, #f8f9fa, #ffffff);
+    }
+    .modal-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1a1a1a;
+      margin: 0;
+    }
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 24px;
+      color: #666;
+      cursor: pointer;
+      padding: 4px;
+      border-radius: 8px;
+      transition: all 0.2s ease;
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-close:hover {
+      background: #f0f0f0;
+      color: #333;
+    }
+    .modal-body {
+      padding: 32px;
+      overflow-y: auto;
+      max-height: calc(90vh - 140px);
+    }
+    .modal-footer {
+      padding: 24px 32px;
+      border-top: 1px solid #f0f0f0;
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      background: #f8f9fa;
+    }
+    .modal-form-group {
+      margin-bottom: 24px;
+    }
+    .modal-label {
+      display: block;
+      font-size: 14px;
+      font-weight: 600;
+      color: #333;
+      margin-bottom: 8px;
+    }
+    .modal-input, .modal-textarea {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #e0e0e0;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: all 0.2s ease;
+      background: #fafbfc;
+    }
+    .modal-input:focus, .modal-textarea:focus {
+      outline: none;
+      border-color: #0055b8;
+      background: white;
+      box-shadow: 0 0 0 3px rgba(0, 85, 184, 0.1);
+    }
+    .modal-textarea {
+      resize: vertical;
+      min-height: 120px;
+    }
+    .modal-file-input {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      margin-top: 8px;
+    }
+    .modal-file-input input[type="file"] {
+      flex: 1;
+    }
+    .modal-image-preview {
+      max-width: 120px;
+      max-height: 80px;
+      object-fit: cover;
+      border-radius: 6px;
+      border: 1px solid #e0e0e0;
+    }
+    .modal-btn {
+      padding: 10px 20px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: none;
+    }
+    .modal-btn-primary {
+      background: linear-gradient(135deg, #0055b8, #003d8a);
+      color: white;
+    }
+    .modal-btn-primary:hover {
+      background: linear-gradient(135deg, #003d8a, #002a6a);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0, 85, 184, 0.3);
+    }
+    .modal-btn-secondary {
+      background: white;
+      border: 2px solid #e0e0e0;
+      color: #666;
+    }
+    .modal-btn-secondary:hover {
+      background: #f8f9fa;
+      border-color: #ccc;
+    }
+  </style>
+</head>
+<body>
+  <div class="admin-layout">
+    <!-- 侧边栏 -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">
+          <div class="logo-icon">L</div>
+          <span>管理后台</span>
+        </div>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section">
+          <div class="nav-section-title">主菜单</div>
+          <div class="nav-item active" onclick="showPage('dashboard')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+            控制台
+          </div>
+          <div class="nav-item" onclick="showPage('inquiries')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            咨询管理
+          </div>
+          <div class="nav-item" onclick="showPage('content')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            内容管理
+          </div>
+        </div>
+        <div class="nav-section">
+          <div class="nav-section-title">系统</div>
+          <div class="nav-item" onclick="showPage('settings')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            系统设置
+          </div>
+          <div class="nav-item" onclick="showPage('news')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            新闻管理
+          </div>
+          <div class="nav-item" onclick="showPage('tools')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+            工具箱管理
+          </div>
+          <div class="nav-item" onclick="logout()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+            退出登录
+          </div>
+        </div>
+      </nav>
+    </aside>
+
+    <!-- 主内容 -->
+    <main class="main-content">
+      <header class="header">
+        <h1 class="header-title" id="pageTitle">控制台</h1>
+        <div class="header-actions">
+          <button class="header-btn" onclick="window.open('../index.html', '_blank')">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+            访问网站
+          </button>
+          <div class="user-menu">
+            <div class="user-avatar">管</div>
+            <span id="adminName">欧阳波</span>
+          </div>
+        </div>
+      </header>
+
+      <div class="content">
+        <!-- 控制台页面 -->
+        <div id="dashboardPage" class="page-content">
+          <div class="page-header">
+            <h2>数据概览</h2>
+            <p>查看平台运营数据</p>
+          </div>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-card-header">
+                <span class="stat-card-title">今日咨询</span>
+                <div class="stat-card-icon blue"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+              </div>
+              <div class="stat-card-value" id="todayInquiries">0</div>
+              <div class="stat-card-change">+12% 较昨日</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card-header">
+                <span class="stat-card-title">待处理咨询</span>
+                <div class="stat-card-icon orange"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+              </div>
+              <div class="stat-card-value" id="pendingInquiries">0</div>
+              <div class="stat-card-change">需要跟进</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card-header">
+                <span class="stat-card-title">本月新增会员</span>
+                <div class="stat-card-icon green"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg></div>
+              </div>
+              <div class="stat-card-value">15</div>
+              <div class="stat-card-change">+8% 较上月</div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-card-header">
+                <span class="stat-card-title">总访问量</span>
+                <div class="stat-card-icon red"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></div>
+              </div>
+              <div class="stat-card-value">2,456</div>
+              <div class="stat-card-change">+23% 较上周</div>
+            </div>
+          </div>
+          
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">最新咨询</h3>
+              <div class="card-actions">
+                <button class="btn-sm btn-outline-sm" onclick="showPage('inquiries')">查看全部</button>
+              </div>
+            </div>
+            <div class="table-container">
+              <table>
+                <thead><tr><th>ID</th><th>企业名称</th><th>联系人</th><th>咨询类型</th><th>状态</th><th>提交时间</th><th>操作</th></tr></thead>
+                <tbody id="recentInquiries"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- 咨询管理页面 -->
+        <div id="inquiriesPage" class="page-content" style="display: none;">
+          <div class="page-header">
+            <h2>咨询管理</h2>
+            <p>管理用户提交的咨询信息</p>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">咨询列表</h3>
+              <div class="card-actions">
+                <select class="btn-sm btn-outline-sm" id="statusFilter" onchange="filterInquiries()">
+                  <option value="">全部状态</option>
+                  <option value="pending">待处理</option>
+                  <option value="processing">处理中</option>
+                  <option value="completed">已完成</option>
+                </select>
+                <button class="btn-sm btn-primary-sm" onclick="exportData()">导出数据</button>
+              </div>
+            </div>
+            <div class="table-container">
+              <table>
+                <thead><tr><th>ID</th><th>企业名称</th><th>联系人</th><th>联系电话</th><th>咨询类型</th><th>状态</th><th>提交时间</th><th>操作</th></tr></thead>
+                <tbody id="allInquiries"></tbody>
+              </table>
+            </div>
+            <div class="pagination">
+              <button class="page-btn">上一页</button>
+              <button class="page-btn active">1</button>
+              <button class="page-btn">2</button>
+              <button class="page-btn">3</button>
+              <button class="page-btn">下一页</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 内容管理页面 -->
+        <div id="contentPage" class="page-content" style="display: none;">
+          <div class="page-header">
+            <h2>内容管理</h2>
+            <p>管理网站页面内容</p>
+          </div>
+          <div class="card">
+            <div class="editor-tabs">
+              <div class="editor-tab active" onclick="switchTab(this, 'home')">首页</div>
+              <div class="editor-tab" onclick="switchTab(this, 'about')">关于我们</div>
+              <div class="editor-tab" onclick="switchTab(this, 'services')">服务体系</div>
+            </div>
+            <div class="editor-content">
+              <div class="form-row">
+                <div class="form-group"><label>页面标题</label><input type="text" value="中嘉锦铭国际贸易 - 中非经贸赋能平台"></div>
+                <div class="form-group"><label>SEO关键词</label><input type="text" value="出海服务,中非经贸,企业出海,KeyWay会员"></div>
+              </div>
+              <div class="form-group"><label>页面描述</label><textarea>中嘉锦铭国际贸易，中非经贸赋能平台与创新促进中心，为企业提供从0到1的出海全周期解决方案。</textarea></div>
+              <div class="form-group"><label>轮播图内容 (JSON格式)</label><textarea rows="8">[
+  {"title": "中嘉锦铭国际贸易", "subtitle": "中非经贸赋能平台", "image": "images/hero-slide-1.jpg"},
+  {"title": "从0到1开展国际业务", "subtitle": "十大赋能中心，十大促进中心", "image": "images/hero-slide-2.jpg"}
+]</textarea></div>
+              <button class="btn-sm btn-primary-sm" onclick="saveContent()">保存修改</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 系统设置页面 -->
+        <div id="settingsPage" class="page-content" style="display: none;">
+          <div class="page-header">
+            <h2>系统设置</h2>
+            <p>配置系统参数</p>
+          </div>
+          
+          <!-- 配色方案设置 -->
+          <div class="card" style="margin-bottom: 24px;">
+            <div class="card-header">
+              <h3 class="card-title">配色方案</h3>
+            </div>
+            <div class="editor-content">
+              <p style="margin-bottom: 16px; color: #666;">选择网站的主题配色方案：</p>
+              <div class="theme-presets" style="display: flex; gap: 16px; flex-wrap: wrap; margin-bottom: 20px;">
+                <div class="theme-preset" data-theme="blue" onclick="selectTheme('blue')" style="cursor: pointer; padding: 16px; border-radius: 12px; border: 2px solid #e0e0e0; transition: all 0.3s; width: 140px; text-align: center;">
+                  <div style="width: 100%; height: 40px; background: linear-gradient(135deg, #0055b8, #003d8a); border-radius: 8px; margin-bottom: 8px;"></div>
+                  <span style="font-size: 14px; font-weight: 500;">海洋蓝</span>
+                </div>
+                <div class="theme-preset" data-theme="gold" onclick="selectTheme('gold')" style="cursor: pointer; padding: 16px; border-radius: 12px; border: 2px solid #e0e0e0; transition: all 0.3s; width: 140px; text-align: center;">
+                  <div style="width: 100%; height: 40px; background: linear-gradient(135deg, #c9a227, #a08020); border-radius: 8px; margin-bottom: 8px;"></div>
+                  <span style="font-size: 14px; font-weight: 500;">奢华金</span>
+                </div>
+                <div class="theme-preset" data-theme="green" onclick="selectTheme('green')" style="cursor: pointer; padding: 16px; border-radius: 12px; border: 2px solid #e0e0e0; transition: all 0.3s; width: 140px; text-align: center;">
+                  <div style="width: 100%; height: 40px; background: linear-gradient(135deg, #10b981, #059669); border-radius: 8px; margin-bottom: 8px;"></div>
+                  <span style="font-size: 14px; font-weight: 500;">生态绿</span>
+                </div>
+                <div class="theme-preset" data-theme="purple" onclick="selectTheme('purple')" style="cursor: pointer; padding: 16px; border-radius: 12px; border: 2px solid #e0e0e0; transition: all 0.3s; width: 140px; text-align: center;">
+                  <div style="width: 100%; height: 40px; background: linear-gradient(135deg, #8b5cf6, #6d28d9); border-radius: 8px; margin-bottom: 8px;"></div>
+                  <span style="font-size: 14px; font-weight: 500;">高贵紫</span>
+                </div>
+                <div class="theme-preset" data-theme="red" onclick="selectTheme('red')" style="cursor: pointer; padding: 16px; border-radius: 12px; border: 2px solid #e0e0e0; transition: all 0.3s; width: 140px; text-align: center;">
+                  <div style="width: 100%; height: 40px; background: linear-gradient(135deg, #ef4444, #dc2626); border-radius: 8px; margin-bottom: 8px;"></div>
+                  <span style="font-size: 14px; font-weight: 500;">中国红</span>
+                </div>
+              </div>
+              <input type="hidden" id="selectedTheme" value="blue">
+            </div>
+          </div>
+          
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">基本信息</h3>
+            </div>
+            <div class="editor-content">
+              <div class="form-row">
+                <div class="form-group"><label>网站名称</label><input type="text" id="siteName" value="中嘉锦铭国际贸易"></div>
+                <div class="form-group"><label>联系电话</label><input type="text" id="sitePhone" value="18874799625"></div>
+              </div>
+              <div class="form-row">
+                <div class="form-group"><label>联系邮箱</label><input type="text" id="siteEmail" value="906725387@qq.com"></div>
+                <div class="form-group"><label>公司地址</label><input type="text" id="siteAddress" value="长沙市雨花区井湾子街道紫金大厦701"></div>
+              </div>
+              <div class="form-group"><label>版权信息</label><input type="text" id="siteCopyright" value="© 2024 中嘉锦铭国际贸易. 保留所有权利."></div>
+              <button class="btn-sm btn-primary-sm" onclick="saveSettings()">保存设置</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+    <!-- News Modal -->
+    <div id="newsModal" class="modal-overlay">
+      <div class="modal-content" style="width: 900px;">
+        <div class="modal-header">
+          <h3 class="modal-title">新闻编辑</h3>
+          <button class="modal-close" onclick="showNewsModal(false)">×</button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="newsId">
+          <div class="modal-form-group">
+            <label class="modal-label">标题</label>
+            <input type="text" id="newsTitle" class="modal-input" placeholder="请输入新闻标题">
+          </div>
+          <div class="modal-form-group">
+            <label class="modal-label">封面图片（可选）</label>
+            <div class="modal-file-input">
+              <input type="file" id="newsImage" accept="image/*">
+              <img id="newsImagePreview" class="modal-image-preview" src="" alt="预览" style="display: none;">
+            </div>
+          </div>
+          <div class="modal-form-group">
+            <label class="modal-label">正文内容</label>
+            <div id="newsBody" style="min-height: 200px; border: 2px solid #e0e0e0; border-radius: 8px; padding: 16px; background: #fafbfc;"></div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="modal-btn modal-btn-secondary" id="newsCancel">取消</button>
+          <button class="modal-btn modal-btn-primary" id="newsSave">保存</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tool Modal -->
+    <div id="toolModal" class="modal-overlay">
+      <div class="modal-content" style="width: 600px;">
+        <div class="modal-header">
+          <h3 class="modal-title">工具编辑</h3>
+          <button class="modal-close" onclick="showToolModal(false)">×</button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="toolId">
+          <div class="modal-form-group">
+            <label class="modal-label">工具名称</label>
+            <input type="text" id="toolName" class="modal-input" placeholder="请输入工具名称">
+          </div>
+          <div class="modal-form-group">
+            <label class="modal-label">工具链接</label>
+            <input type="url" id="toolUrl" class="modal-input" placeholder="https://example.com">
+          </div>
+          <div class="modal-form-group">
+            <label class="modal-label">工具图标（可选）</label>
+            <div class="modal-file-input">
+              <input type="file" id="toolImage" accept="image/*">
+              <img id="toolImagePreview" class="modal-image-preview" src="" alt="预览" style="display: none;">
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="modal-btn modal-btn-secondary" id="toolCancel">取消</button>
+          <button class="modal-btn modal-btn-primary" id="toolSave">保存</button>
+        </div>
+      </div>
+    </div>
+
+          <div id="newsPage" class="page-content" style="display:none;">
+          <div class="page-header">
+            <h2>新闻管理</h2>
+            <p>管理网站新闻与公告</p>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">新闻列表</h3>
+              <div class="card-actions">
+                <button class="btn-sm btn-primary-sm" onclick="openNewsEditor()">新建新闻</button>
+              </div>
+            </div>
+            <div class="editor-content">
+              <div id="news-list"></div>
+            </div>
+          </div>
+        </div>
+
+        <div id="toolsPage" class="page-content" style="display:none;">
+          <div class="page-header">
+            <h2>工具箱管理</h2>
+            <p>管理实用工具与链接</p>
+          </div>
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">工具列表</h3>
+              <div class="card-actions">
+                <button class="btn-sm btn-primary-sm" onclick="openToolEditor()">新建工具</button>
+              </div>
+            </div>
+            <div class="editor-content">
+              <div id="tools-list"></div>
+            </div>
+          </div>
+        </div>
+
+  <script>
+    // initialize Quill for news body
+    let quillNews = null;
+    function ensureQuill() {
+      if (window.Quill && !quillNews) {
+        quillNews = new Quill('#newsBody', { theme: 'snow' });
+      }
+    }
+
+    function getAuthHeader() {
+      const token = sessionStorage.getItem('adminToken');
+      return token ? { 'Authorization': 'Bearer ' + token } : {};
+    }
+
+    // 数据缓存管理
+    const DataCache = {
+      inquiries: { data: null, timestamp: 0, ttl: 60000 }, // 1分钟缓存
+      news: { data: null, timestamp: 0, ttl: 120000 }, // 2分钟缓存
+      tools: { data: null, timestamp: 0, ttl: 120000 },
+      
+      get(key) {
+        const cache = this[key];
+        if (!cache) return null;
+        if (cache.data && (Date.now() - cache.timestamp) < cache.ttl) {
+          return cache.data;
+        }
+        return null;
+      },
+      
+      set(key, data) {
+        if (this[key]) {
+          this[key].data = data;
+          this[key].timestamp = Date.now();
+        }
+      },
+      
+      clear(key) {
+        if (this[key]) {
+          this[key].data = null;
+          this[key].timestamp = 0;
+        }
+      },
+      
+      clearAll() {
+        Object.keys(this).forEach(key => {
+          if (this[key] && typeof this[key] === 'object' && 'data' in this[key]) {
+            this.clear(key);
+          }
+        });
+      }
+    };
+
+    // Toast通知系统
+    const Toast = {
+      container: null,
+      
+      init() {
+        if (!this.container) {
+          this.container = document.createElement('div');
+          this.container.style.cssText = `
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 10000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+          `;
+          document.body.appendChild(this.container);
+        }
+      },
+      
+      show(message, type = 'info', duration = 3000) {
+        this.init();
+        const toast = document.createElement('div');
+        const colors = {
+          success: '#28a745',
+          error: '#dc3545',
+          warning: '#f0ad4e',
+          info: '#0055b8'
+        };
+        toast.style.cssText = `
+          background: ${colors[type] || colors.info};
+          color: white;
+          padding: 12px 20px;
+          border-radius: 8px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+          font-size: 14px;
+          max-width: 300px;
+          animation: slideIn 0.3s ease;
+          display: flex;
+          align-items: center;
+          gap: 8px;
+        `;
+        toast.innerHTML = `
+          <span>${type === 'success' ? '✓' : type === 'error' ? '✗' : type === 'warning' ? '⚠' : 'ℹ'}</span>
+          <span>${message}</span>
+        `;
+        this.container.appendChild(toast);
+        
+        setTimeout(() => {
+          toast.style.animation = 'slideOut 0.3s ease';
+          setTimeout(() => toast.remove(), 300);
+        }, duration);
+      }
+    };
+
+    // 添加动画样式
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes slideIn {
+        from { transform: translateX(100%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+      }
+      @keyframes slideOut {
+        from { transform: translateX(0); opacity: 1; }
+        to { transform: translateX(100%); opacity: 0; }
+      }
+    `;
+    document.head.appendChild(style);
+
+    // 加载状态管理
+    function showLoading(elementId) {
+      const el = document.getElementById(elementId);
+      if (el) {
+        el.style.position = 'relative';
+        const loader = document.createElement('div');
+        loader.className = 'loading-overlay';
+        loader.style.cssText = `
+          position: absolute;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(255,255,255,0.8);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          z-index: 100;
+        `;
+        loader.innerHTML = '<div style="width: 40px; height: 40px; border: 3px solid #f3f3f3; border-top: 3px solid #0055b8; border-radius: 50%; animation: spin 1s linear infinite;"></div>';
+        el.appendChild(loader);
+      }
+    }
+
+    function hideLoading(elementId) {
+      const el = document.getElementById(elementId);
+      if (el) {
+        const loader = el.querySelector('.loading-overlay');
+        if (loader) loader.remove();
+      }
+    }
+
+    // 添加旋转动画
+    const spinStyle = document.createElement('style');
+    spinStyle.textContent = `
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+    `;
+    document.head.appendChild(spinStyle);
+
+    // ensure Quill after DOM ready
+    document.addEventListener('DOMContentLoaded', () => { ensureQuill(); });
+
+    // 检查登录状态和会话超时
+    function checkAuth() {
+      if (!sessionStorage.getItem('isLoggedIn')) {
+        window.location.href = 'login.html';
+        return false;
+      }
+      
+      // 检查会话超时（2小时）
+      const loginTime = sessionStorage.getItem('loginTime');
+      if (loginTime) {
+        const hoursSinceLogin = (Date.now() - new Date(loginTime).getTime()) / (1000 * 60 * 60);
+        if (hoursSinceLogin > 2) {
+          Toast.show('会话已过期，请重新登录', 'warning');
+          setTimeout(() => logout(), 2000);
+          return false;
+        }
+      }
+      return true;
+    }
+
+    if (!checkAuth()) {
+      window.location.href = 'login.html';
+    }
+
+    // 显示欧阳波名称
+    const adminName = sessionStorage.getItem('adminName');
+    if (adminName) {
+      document.getElementById('adminName').textContent = adminName;
+    }
+
+    // 定期刷新数据（每5分钟）
+    setInterval(() => {
+      if (checkAuth()) {
+        DataCache.clearAll();
+        loadInquiries();
+      }
+    }, 5 * 60 * 1000);
+
+    // 页面切换
+    function showPage(page) {
+      // 保存当前页面到sessionStorage
+      sessionStorage.setItem('currentPage', page);
+      
+      // 更新导航状态
+      document.querySelectorAll('.nav-item').forEach(item => {
+        item.classList.remove('active');
+        // 根据页面名称匹配导航项
+        const navText = item.textContent.trim();
+        const pageNavMap = {
+          'dashboard': '控制台',
+          'inquiries': '咨询管理',
+          'content': '内容管理',
+          'settings': '系统设置',
+          'news': '新闻管理',
+          'tools': '工具箱管理'
+        };
+        if (navText === pageNavMap[page]) {
+          item.classList.add('active');
+        }
+      });
+
+      // 隐藏所有页面
+      document.querySelectorAll('.page-content').forEach(p => p.style.display = 'none');
+
+      // 更新页面标题
+      const pageNames = {
+        'dashboard': '控制台',
+        'inquiries': '咨询管理',
+        'content': '内容管理',
+        'settings': '系统设置',
+        'news': '新闻管理',
+        'tools': '工具箱管理'
+      };
+      document.getElementById('pageTitle').textContent = pageNames[page] || '';
+
+      // 显示目标页面
+      const pageElement = document.getElementById(page + 'Page');
+      if (pageElement) {
+        pageElement.style.display = 'block';
+        // 添加淡入动画
+        pageElement.style.opacity = '0';
+        pageElement.style.transform = 'translateY(10px)';
+        pageElement.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+        setTimeout(() => {
+          pageElement.style.opacity = '1';
+          pageElement.style.transform = 'translateY(0)';
+        }, 10);
+      }
+
+      // 加载页面数据
+      if (page === 'dashboard' || page === 'inquiries') loadInquiries();
+      if (page === 'content') loadContent();
+      if (page === 'settings') loadSettings();
+      if (page === 'news') loadNews();
+      if (page === 'tools') loadTools();
+    }
+    
+    // 页面加载时恢复上次访问的页面
+    document.addEventListener('DOMContentLoaded', () => {
+      const savedPage = sessionStorage.getItem('currentPage');
+      if (savedPage && savedPage !== 'dashboard') {
+        showPage(savedPage);
+      }
+    });
+
+    // 加载咨询数据（从后端获取，支持缓存）
+    async function loadInquiries(forceRefresh = false) {
+      // 检查缓存
+      if (!forceRefresh) {
+        const cached = DataCache.get('inquiries');
+        if (cached) {
+          renderInquiries(cached);
+          return;
+        }
+      }
+
+      showLoading('dashboardPage');
+      
+      try {
+        const res = await fetch('/api/inquiries', {
+          headers: getAuthHeader()
+        });
+        if (!res.ok) throw new Error('无法获取咨询数据');
+        const inquiries = await res.json();
+
+        // 按时间倒序
+        inquiries.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+        
+        // 缓存数据
+        DataCache.set('inquiries', inquiries);
+        
+        renderInquiries(inquiries);
+        
+        Toast.show('数据已更新', 'success', 2000);
+      } catch (err) {
+        console.error('loadInquiries error', err);
+        Toast.show('无法加载咨询数据：' + (err.message || '请检查后端服务'), 'error');
+        
+        // 如果有缓存，显示缓存数据
+        const cached = DataCache.get('inquiries');
+        if (cached) {
+          renderInquiries(cached);
+          Toast.show('显示缓存数据', 'warning');
+        }
+      } finally {
+        hideLoading('dashboardPage');
+      }
+    }
+
+    // 渲染咨询数据
+    function renderInquiries(inquiries) {
+      // 更新统计数据
+      const today = new Date().toDateString();
+      const todayInquiries = inquiries.filter(i => new Date(i.createdAt).toDateString() === today).length;
+      const pendingInquiries = inquiries.filter(i => i.status === 'pending').length;
+      document.getElementById('todayInquiries').textContent = todayInquiries;
+      document.getElementById('pendingInquiries').textContent = pendingInquiries;
+
+      // 渲染表格映射
+      const needTypeMap = {
+        'policy': '政策咨询',
+        'service': '服务流程',
+        'member': '会员申请',
+        'overseas': '海外落地',
+        'other': '其他'
+      };
+      const statusMap = {
+        'pending': '<span class="status-badge pending">待处理</span>',
+        'processing': '<span class="status-badge processing">处理中</span>',
+        'completed': '<span class="status-badge completed">已完成</span>',
+        'cancelled': '<span class="status-badge cancelled">已取消</span>'
+      };
+
+      const renderRow = (i) => `
+        <tr>
+          <td>#${String(i.id).slice(-6)}</td>
+          <td>${escapeHtml(i.company || '')}</td>
+          <td>${escapeHtml(i.name || '')}</td>
+          <td>${i.phone || ''}</td>
+          <td>${needTypeMap[i.need] || '其他'}</td>
+          <td>${statusMap[i.status] || statusMap.pending}</td>
+          <td>${new Date(i.createdAt).toLocaleString()}</td>
+          <td>
+            <div class="action-btns">
+              <button class="action-btn view" onclick="viewInquiry('${i.id}')">查看</button>
+              <button class="action-btn edit" onclick="processInquiry('${i.id}')">处理</button>
+            </div>
+          </td>
+        </tr>
+      `;
+
+      // 最新咨询（前5条）
+      document.getElementById('recentInquiries').innerHTML = inquiries.slice(0, 5).map(renderRow).join('');
+      // 全部咨询
+      document.getElementById('allInquiries').innerHTML = inquiries.map(renderRow).join('');
+    }
+
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, function(m) { return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[m]; });
+    }
+
+    // helper to read file as base64
+    function readFileAsDataURL(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = (e) => reject(e);
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function filterInquiries() {
+      // 简单实现：重新从后端加载并前端过滤
+      const status = document.getElementById('statusFilter').value;
+      loadInquiries().then(() => {
+        if (!status) return;
+        const rows = Array.from(document.querySelectorAll('#allInquiries tr'));
+        rows.forEach(r => {
+          const statusCell = r.querySelector('td:nth-child(6)');
+          if (statusCell) {
+            const text = statusCell.textContent || '';
+            if ( (status === 'pending' && text.includes('待处理')) ||
+                 (status === 'processing' && text.includes('处理中')) ||
+                 (status === 'completed' && text.includes('已完成')) ) {
+              r.style.display = '';
+            } else {
+              r.style.display = 'none';
+            }
+          }
+        });
+      });
+    }
+
+    async function viewInquiry(id) {
+      try {
+        // 先从缓存查找
+        let inquiry = null;
+        const cached = DataCache.get('inquiries');
+        if (cached) {
+          inquiry = cached.find(i => String(i.id) === String(id));
+        }
+        
+        // 如果缓存中没有，从后端获取
+        if (!inquiry) {
+          const res = await fetch(`/api/inquiries/${id}`, {
+            headers: getAuthHeader()
+          });
+          if (!res.ok) throw new Error('无法获取咨询详情');
+          inquiry = await res.json();
+        }
+        
+        if (inquiry) {
+          // 创建详情弹窗
+          const modal = document.createElement('div');
+          modal.className = 'modal-overlay show';
+          modal.style.zIndex = '9999';
+          modal.innerHTML = `
+            <div class="modal-content" style="width: 600px; max-height: 80vh;">
+              <div class="modal-header">
+                <h3 class="modal-title">咨询详情 #${String(inquiry.id).slice(-6)}</h3>
+                <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">×</button>
+              </div>
+              <div class="modal-body" style="padding: 24px;">
+                <div style="margin-bottom: 16px;">
+                  <label style="font-weight: 600; color: #666; font-size: 12px;">企业名称</label>
+                  <div style="font-size: 16px; margin-top: 4px;">${escapeHtml(inquiry.company || '未填写')}</div>
+                </div>
+                <div style="margin-bottom: 16px;">
+                  <label style="font-weight: 600; color: #666; font-size: 12px;">联系人</label>
+                  <div style="font-size: 16px; margin-top: 4px;">${escapeHtml(inquiry.name || '未填写')}</div>
+                </div>
+                <div style="margin-bottom: 16px;">
+                  <label style="font-weight: 600; color: #666; font-size: 12px;">联系电话</label>
+                  <div style="font-size: 16px; margin-top: 4px;">${inquiry.phone || '未填写'}</div>
+                </div>
+                <div style="margin-bottom: 16px;">
+                  <label style="font-weight: 600; color: #666; font-size: 12px;">咨询类型</label>
+                  <div style="font-size: 16px; margin-top: 4px;">${inquiry.need || '其他'}</div>
+                </div>
+                <div style="margin-bottom: 16px;">
+                  <label style="font-weight: 600; color: #666; font-size: 12px;">留言内容</label>
+                  <div style="font-size: 14px; margin-top: 4px; padding: 12px; background: #f8f9fa; border-radius: 8px; line-height: 1.6;">${escapeHtml(inquiry.message || '无留言')}</div>
+                </div>
+                <div style="margin-bottom: 16px;">
+                  <label style="font-weight: 600; color: #666; font-size: 12px;">提交时间</label>
+                  <div style="font-size: 14px; margin-top: 4px;">${new Date(inquiry.createdAt).toLocaleString()}</div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button class="modal-btn modal-btn-secondary" onclick="this.closest('.modal-overlay').remove()">关闭</button>
+                <button class="modal-btn modal-btn-primary" onclick="this.closest('.modal-overlay').remove(); processInquiry('${id}')">处理</button>
+              </div>
+            </div>
+          `;
+          document.body.appendChild(modal);
+        } else {
+          Toast.show('未找到该咨询', 'error');
+        }
+      } catch (err) {
+        console.error(err);
+        Toast.show('无法获取咨询详情', 'error');
+      }
+    }
+
+    async function processInquiry(id) {
+      try {
+        // 获取当前项
+        let inquiry = null;
+        const cached = DataCache.get('inquiries');
+        if (cached) {
+          inquiry = cached.find(i => String(i.id) === String(id));
+        }
+        
+        if (!inquiry) {
+          const res = await fetch(`/api/inquiries/${id}`, {
+            headers: getAuthHeader()
+          });
+          if (!res.ok) throw new Error('无法获取咨询');
+          inquiry = await res.json();
+        }
+        
+        if (!inquiry) {
+          Toast.show('未找到该咨询', 'error');
+          return;
+        }
+
+        // 状态切换逻辑
+        const statusFlow = {
+          'pending': 'processing',
+          'processing': 'completed',
+          'completed': 'completed'
+        };
+        const newStatus = statusFlow[inquiry.status] || 'processing';
+        
+        const statusText = {
+          'pending': '待处理',
+          'processing': '处理中',
+          'completed': '已完成'
+        };
+
+        const patchRes = await fetch(`/api/inquiries/${encodeURIComponent(id)}`, {
+          method: 'PATCH', 
+          headers: Object.assign({ 'Content-Type': 'application/json' }, getAuthHeader()),
+          body: JSON.stringify({ 
+            status: newStatus,
+            processedAt: new Date().toISOString(),
+            processedBy: sessionStorage.getItem('adminName') || '欧阳波'
+          })
+        });
+        
+        if (!patchRes.ok) throw new Error('更新失败');
+        
+        // 清除缓存，强制刷新
+        DataCache.clear('inquiries');
+        await loadInquiries(true);
+        
+        Toast.show(`咨询状态已更新为：${statusText[newStatus]}`, 'success');
+      } catch (err) {
+        console.error(err);
+        Toast.show('处理咨询失败：' + (err.message || '请稍后重试'), 'error');
+      }
+    }
+
+    async function exportData() {
+      try {
+        Toast.show('正在准备导出数据...', 'info');
+        
+        // 优先使用缓存数据
+        let inquiries = DataCache.get('inquiries');
+        
+        if (!inquiries) {
+          const res = await fetch('/api/inquiries', {
+            headers: getAuthHeader()
+          });
+          if (!res.ok) throw new Error('无法获取数据');
+          inquiries = await res.json();
+          DataCache.set('inquiries', inquiries);
+        }
+        
+        // 应用当前筛选
+        const statusFilter = document.getElementById('statusFilter');
+        let dataToExport = inquiries;
+        if (statusFilter && statusFilter.value) {
+          dataToExport = inquiries.filter(i => i.status === statusFilter.value);
+        }
+        
+        const needTypeMap = {
+          'policy': '政策咨询',
+          'service': '服务流程',
+          'member': '会员申请',
+          'overseas': '海外落地',
+          'other': '其他'
+        };
+        
+        const statusMap = {
+          'pending': '待处理',
+          'processing': '处理中',
+          'completed': '已完成',
+          'cancelled': '已取消'
+        };
+        
+        const header = ['ID','企业名称','联系人','电话','咨询类型','状态','提交时间','处理时间','处理人'];
+        const rows = dataToExport.map(i => [
+          i.id, 
+          i.company || '', 
+          i.name || '', 
+          i.phone || '', 
+          needTypeMap[i.need] || '其他', 
+          statusMap[i.status] || '待处理', 
+          i.createdAt ? new Date(i.createdAt).toLocaleString() : '',
+          i.processedAt ? new Date(i.processedAt).toLocaleString() : '',
+          i.processedBy || ''
+        ]);
+        
+        const csv = [header.join(','), ...rows.map(r => r.map(cell => '"' + String(cell).replace(/"/g,'""') + '"').join(','))].join('\n');
+
+        const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8;' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'consultations_' + new Date().toISOString().slice(0, 10) + '_' + dataToExport.length + '条.csv';
+        link.click();
+        
+        Toast.show(`成功导出 ${dataToExport.length} 条数据`, 'success');
+      } catch (err) {
+        console.error(err);
+        Toast.show('导出失败：' + (err.message || '请稍后重试'), 'error');
+      }
+    }
+
+    function switchTab(tab, page) {
+      document.querySelectorAll('.editor-tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+    }
+
+    async function saveContent() {
+      try {
+        const title = document.querySelector('.editor-content input').value;
+        const keywords = document.querySelectorAll('.editor-content input[type="text"]')[1]?.value || '';
+        const description = document.querySelector('.editor-content textarea').value;
+        const carouselText = document.querySelectorAll('.editor-content textarea')[1]?.value || '[]';
+        
+        // 验证JSON格式
+        let carousel;
+        try {
+          carousel = JSON.parse(carouselText);
+          if (!Array.isArray(carousel)) throw new Error('轮播图数据必须是数组');
+        } catch (jsonErr) {
+          Toast.show('轮播图数据格式错误：' + jsonErr.message, 'error');
+          return;
+        }
+        
+        const payload = { 
+          title, 
+          keywords, 
+          description, 
+          carousel,
+          updatedAt: new Date().toISOString(),
+          updatedBy: sessionStorage.getItem('adminName') || '欧阳波'
+        };
+        const headers = Object.assign({'Content-Type': 'application/json'}, getAuthHeader());
+        
+        Toast.show('正在保存...', 'info');
+        
+        // 尝试保存到后端
+        try {
+          const res = await fetch('/api/content/home', { 
+            method: 'PUT', 
+            headers, 
+            body: JSON.stringify(payload) 
+          });
+          
+          if (res.ok) {
+            // 同时保存到本地
+            localStorage.setItem('homeContent', JSON.stringify(payload));
+            Toast.show('内容已保存到服务器', 'success');
+            return;
+          }
+        } catch (err) {
+          console.warn('后端保存失败', err);
+        }
+        
+        // 后端不可用，保存到本地
+        localStorage.setItem('homeContent', JSON.stringify(payload));
+        Toast.show('内容已保存到本地（后端服务不可用）', 'warning', 5000);
+        
+      } catch (err) { 
+        console.error(err); 
+        Toast.show('保存失败：' + (err.message||''), 'error'); 
+      }
+    }
+    
+    // 加载内容（从后端或本地）
+    async function loadContent() {
+      try {
+        // 尝试从后端加载
+        const res = await fetch('/api/content/home', {
+          headers: getAuthHeader()
+        });
+        
+        if (res.ok) {
+          const data = await res.json();
+          populateContentForm(data);
+          localStorage.setItem('homeContent', JSON.stringify(data));
+          return;
+        }
+      } catch (err) {
+        console.warn('从后端加载内容失败', err);
+      }
+      
+      // 从本地存储加载
+      const localContent = localStorage.getItem('homeContent');
+      if (localContent) {
+        const data = JSON.parse(localContent);
+        populateContentForm(data);
+        Toast.show('已从本地加载内容', 'info');
+      }
+    }
+    
+    // 填充内容表单
+    function populateContentForm(data) {
+      if (data.title) {
+        const titleInput = document.querySelector('.editor-content input');
+        if (titleInput) titleInput.value = data.title;
+      }
+      
+      if (data.keywords) {
+        const keywordsInput = document.querySelectorAll('.editor-content input[type="text"]')[1];
+        if (keywordsInput) keywordsInput.value = data.keywords;
+      }
+      
+      if (data.description) {
+        const descTextarea = document.querySelector('.editor-content textarea');
+        if (descTextarea) descTextarea.value = data.description;
+      }
+      
+      if (data.carousel) {
+        const carouselTextarea = document.querySelectorAll('.editor-content textarea')[1];
+        if (carouselTextarea) carouselTextarea.value = JSON.stringify(data.carousel, null, 2);
+      }
+    }
+
+    async function saveSettings() {
+      try {
+        const payload = {
+          siteName: document.getElementById('siteName').value,
+          phone: document.getElementById('sitePhone').value,
+          email: document.getElementById('siteEmail').value,
+          address: document.getElementById('siteAddress').value,
+          copyright: document.getElementById('siteCopyright').value,
+          theme: document.getElementById('selectedTheme').value || 'blue'
+        };
+        
+        // 添加时间戳
+        payload.updatedAt = new Date().toISOString();
+        payload.updatedBy = sessionStorage.getItem('adminName') || '欧阳波';
+        
+        Toast.show('正在保存设置...', 'info');
+        
+        // 尝试保存到后端
+        try {
+          const res = await fetch('/api/content/settings', {
+            method: 'PUT', 
+            headers: Object.assign({ 'Content-Type': 'application/json' }, getAuthHeader()), 
+            body: JSON.stringify(payload)
+          });
+          
+          if (res.ok) {
+            // 同时保存到本地作为备份
+            localStorage.setItem('siteSettings', JSON.stringify(payload));
+            Toast.show('设置已保存到服务器', 'success');
+            return;
+          }
+        } catch (err) {
+          console.warn('后端保存失败，使用本地存储', err);
+        }
+        
+        // 后端不可用，保存到本地存储
+        localStorage.setItem('siteSettings', JSON.stringify(payload));
+        Toast.show('设置已保存到本地（后端服务不可用）', 'warning', 5000);
+        
+      } catch (err) { 
+        console.error(err); 
+        Toast.show('保存失败：' + (err.message||''), 'error'); 
+      }
+    }
+    
+    // 加载设置（从后端或本地）
+    async function loadSettings() {
+      try {
+        // 尝试从后端加载
+        const res = await fetch('/api/content/settings', {
+          headers: getAuthHeader()
+        });
+        
+        if (res.ok) {
+          const data = await res.json();
+          populateSettingsForm(data);
+          // 更新本地备份
+          localStorage.setItem('siteSettings', JSON.stringify(data));
+          return;
+        }
+      } catch (err) {
+        console.warn('从后端加载设置失败', err);
+      }
+      
+      // 从本地存储加载
+      const localSettings = localStorage.getItem('siteSettings');
+      if (localSettings) {
+        const data = JSON.parse(localSettings);
+        populateSettingsForm(data);
+        Toast.show('已从本地加载设置', 'info');
+      }
+    }
+    
+    // 填充设置表单
+    function populateSettingsForm(data) {
+      // 填充基本信息
+      if (data.siteName) document.getElementById('siteName').value = data.siteName;
+      if (data.phone) document.getElementById('sitePhone').value = data.phone;
+      if (data.email) document.getElementById('siteEmail').value = data.email;
+      if (data.address) document.getElementById('siteAddress').value = data.address;
+      if (data.copyright) document.getElementById('siteCopyright').value = data.copyright;
+      
+      // 填充配色方案
+      if (data.theme) {
+        selectTheme(data.theme, false);
+      }
+    }
+    
+    // 选择配色方案
+    function selectTheme(theme, updateInput = true) {
+      // 移除所有选中状态
+      document.querySelectorAll('.theme-preset').forEach(el => {
+        el.style.borderColor = '#e0e0e0';
+        el.style.boxShadow = 'none';
+      });
+      
+      // 添加选中状态
+      const selected = document.querySelector(`.theme-preset[data-theme="${theme}"]`);
+      if (selected) {
+        selected.style.borderColor = '#0055b8';
+        selected.style.boxShadow = '0 4px 12px rgba(0, 85, 184, 0.2)';
+      }
+      
+      // 更新隐藏字段
+      if (updateInput) {
+        document.getElementById('selectedTheme').value = theme;
+      }
+    }
+
+    // --- 新闻管理 ---
+    async function loadNews(forceRefresh = false) {
+      // 检查缓存
+      if (!forceRefresh) {
+        const cached = DataCache.get('news');
+        if (cached) {
+          renderNews(cached);
+          return;
+        }
+      }
+      
+      showLoading('newsPage');
+      
+      try {
+        const res = await fetch('/api/news', {
+          headers: getAuthHeader()
+        });
+        if (!res.ok) throw new Error('无法获取新闻');
+        const data = await res.json();
+        
+        // 缓存数据
+        DataCache.set('news', data);
+        
+        renderNews(data);
+      } catch (e) { 
+        console.error(e); 
+        Toast.show('加载新闻失败', 'error');
+        
+        // 显示缓存
+        const cached = DataCache.get('news');
+        if (cached) {
+          renderNews(cached);
+          Toast.show('显示缓存数据', 'warning');
+        }
+      } finally {
+        hideLoading('newsPage');
+      }
+    }
+    
+    function renderNews(data) {
+      const container = document.getElementById('news-list');
+      container.innerHTML = '';
+      
+      if (data.length === 0) {
+        container.innerHTML = '<div style="text-align: center; padding: 40px; color: #999;">暂无新闻，点击"新建新闻"添加</div>';
+        return;
+      }
+      
+      data.forEach(n => {
+        const el = document.createElement('div');
+        el.className = 'card';
+        el.style.marginBottom = '12px';
+        el.style.transition = 'transform 0.2s ease, box-shadow 0.2s ease';
+        el.onmouseenter = () => { el.style.transform = 'translateY(-2px)'; el.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)'; };
+        el.onmouseleave = () => { el.style.transform = ''; el.style.boxShadow = ''; };
+        
+        const date = n.createdAt ? new Date(n.createdAt).toLocaleDateString() : '';
+        const preview = (n.body || '').replace(/<[^>]*>/g, '').slice(0, 150);
+        
+        el.innerHTML = `
+          <div class="card-header">
+            <div>
+              <div class="card-title">${escapeHtml(n.title)}</div>
+              <div style="font-size: 12px; color: #999; margin-top: 4px;">${date}</div>
+            </div>
+            <div class="card-actions">
+              <button class="btn-sm btn-outline-sm" onclick="editNews('${n.id}')">编辑</button>
+              <button class="btn-sm btn-outline-sm" style="color: #dc3545;" onclick="deleteNews('${n.id}')">删除</button>
+            </div>
+          </div>
+          <div class="editor-content">
+            <p style="color: #666; line-height: 1.6;">${escapeHtml(preview)}${preview.length >= 150 ? '...' : ''}</p>
+          </div>
+        `;
+        container.appendChild(el);
+      });
+    }
+
+    // Modal-based editor for news (rich text + image upload as base64)
+    function showNewsModal(show, item) {
+      const modal = document.getElementById('newsModal');
+      if (!modal) return;
+      if (show) {
+        modal.classList.add('show');
+        ensureQuill();
+        if (item) {
+          document.getElementById('newsId').value = item.id || '';
+          document.getElementById('newsTitle').value = item.title || '';
+          if (quillNews) quillNews.root.innerHTML = item.body || '';
+          const preview = document.getElementById('newsImagePreview');
+          if (item.image) {
+            preview.src = item.image;
+            preview.style.display = 'block';
+          } else {
+            preview.style.display = 'none';
+          }
+        } else {
+          document.getElementById('newsId').value = '';
+          document.getElementById('newsTitle').value = '';
+          if (quillNews) quillNews.root.innerHTML = '';
+          document.getElementById('newsImagePreview').style.display = 'none';
+        }
+      } else {
+        modal.classList.remove('show');
+      }
+    }
+
+    function openNewsEditor(item) { showNewsModal(true, item); }
+
+    document.getElementById && (() => {
+      // save handler
+      const saveBtn = document.getElementById('newsSave');
+      if (saveBtn) saveBtn.addEventListener('click', async () => {
+        const id = document.getElementById('newsId').value;
+        const title = document.getElementById('newsTitle').value.trim();
+        const body = (quillNews ? quillNews.root.innerHTML : document.getElementById('newsBody').innerHTML).trim();
+        const fileInput = document.getElementById('newsImage');
+        try {
+          const form = new FormData();
+          form.append('title', title);
+          form.append('body', body);
+          if (fileInput && fileInput.files && fileInput.files[0]) form.append('image', fileInput.files[0]);
+          let res;
+          const headers = getAuthHeader();
+          if (id) {
+            res = await fetch(`/api/news/${id}`, { method: 'PUT', headers, body: form });
+          } else {
+            res = await fetch('/api/news', { method: 'POST', headers, body: form });
+          }
+          if (!res.ok) throw new Error('保存失败');
+          showNewsModal(false);
+          document.getElementById('newsImage').value = '';
+          loadNews();
+        } catch (e) { console.error(e); alert(e.message || '保存失败'); }
+      });
+      const newsFile = document.getElementById('newsImage'); if (newsFile) newsFile.addEventListener('change', (ev)=>{ const f = ev.target.files && ev.target.files[0]; if (f) { document.getElementById('newsImagePreview').src = URL.createObjectURL(f); document.getElementById('newsImagePreview').style.display = 'block'; } else { document.getElementById('newsImagePreview').style.display = 'none'; } });
+      const cancelBtn = document.getElementById('newsCancel'); if (cancelBtn) cancelBtn.addEventListener('click', ()=>showNewsModal(false));
+    })();
+
+    async function editNews(id) { try { const headers = getAuthHeader(); const res = await fetch(`/api/news/${id}`, { headers }); if (!res.ok) throw new Error('无法获取'); const item = await res.json(); openNewsEditor(item);} catch(e){console.error(e);alert('加载新闻失败');} }
+
+    async function deleteNews(id) { 
+      // 使用自定义确认对话框
+      const confirmed = await showConfirmDialog('确认删除', '确定要删除这条新闻吗？此操作不可恢复。');
+      if (!confirmed) return;
+      
+      try { 
+        const headers = getAuthHeader(); 
+        const res = await fetch(`/api/news/${id}`, { method: 'DELETE', headers }); 
+        if (!res.ok) throw new Error('删除失败'); 
+        
+        // 清除缓存
+        DataCache.clear('news');
+        await loadNews(true); 
+        
+        Toast.show('新闻已删除', 'success');
+      } catch(e){
+        console.error(e); 
+        Toast.show('删除失败：' + (e.message || ''), 'error'); 
+      } 
+    }
+    
+    // 自定义确认对话框
+    function showConfirmDialog(title, message) {
+      return new Promise((resolve) => {
+        const modal = document.createElement('div');
+        modal.className = 'modal-overlay show';
+        modal.style.zIndex = '10000';
+        modal.innerHTML = `
+          <div class="modal-content" style="width: 400px;">
+            <div class="modal-header">
+              <h3 class="modal-title">${title}</h3>
+              <button class="modal-close" onclick="this.closest('.modal-overlay').remove(); resolve(false);">×</button>
+            </div>
+            <div class="modal-body" style="padding: 24px;">
+              <p style="color: #666; line-height: 1.6;">${message}</p>
+            </div>
+            <div class="modal-footer">
+              <button class="modal-btn modal-btn-secondary" onclick="this.closest('.modal-overlay').remove(); resolve(false);">取消</button>
+              <button class="modal-btn modal-btn-primary" style="background: #dc3545;" onclick="this.closest('.modal-overlay').remove(); resolve(true);">确认删除</button>
+            </div>
+          </div>
+        `;
+        document.body.appendChild(modal);
+      });
+    }
+
+    // --- 工具管理 ---
+    async function loadTools(forceRefresh = false) {
+      // 检查缓存
+      if (!forceRefresh) {
+        const cached = DataCache.get('tools');
+        if (cached) {
+          renderTools(cached);
+          return;
+        }
+      }
+      
+      showLoading('toolsPage');
+      
+      try {
+        const res = await fetch('/api/tools', {
+          headers: getAuthHeader()
+        });
+        if (!res.ok) throw new Error('无法获取工具');
+        const data = await res.json();
+        
+        // 缓存数据
+        DataCache.set('tools', data);
+        
+        renderTools(data);
+      } catch (e) { 
+        console.error(e); 
+        Toast.show('加载工具失败', 'error');
+        
+        // 显示缓存
+        const cached = DataCache.get('tools');
+        if (cached) {
+          renderTools(cached);
+          Toast.show('显示缓存数据', 'warning');
+        }
+      } finally {
+        hideLoading('toolsPage');
+      }
+    }
+    
+    function renderTools(data) {
+      const container = document.getElementById('tools-list');
+      container.innerHTML = '';
+      
+      if (data.length === 0) {
+        container.innerHTML = '<div style="text-align: center; padding: 40px; color: #999;">暂无工具，点击"新建工具"添加</div>';
+        return;
+      }
+      
+      data.forEach(t => {
+        const el = document.createElement('div');
+        el.className = 'card';
+        el.style.marginBottom = '12px';
+        el.style.transition = 'transform 0.2s ease, box-shadow 0.2s ease';
+        el.onmouseenter = () => { el.style.transform = 'translateY(-2px)'; el.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)'; };
+        el.onmouseleave = () => { el.style.transform = ''; el.style.boxShadow = ''; };
+        
+        const url = t.url || '';
+        const shortUrl = url.length > 50 ? url.slice(0, 50) + '...' : url;
+        
+        el.innerHTML = `
+          <div class="card-header">
+            <div class="card-title">${escapeHtml(t.name)}</div>
+            <div class="card-actions">
+              <a href="${escapeHtml(url)}" target="_blank" class="btn-sm btn-outline-sm" style="text-decoration: none;">访问</a>
+              <button class="btn-sm btn-outline-sm" onclick="editTool('${t.id}')">编辑</button>
+              <button class="btn-sm btn-outline-sm" style="color: #dc3545;" onclick="deleteTool('${t.id}')">删除</button>
+            </div>
+          </div>
+          <div class="editor-content">
+            <p style="color: #666; font-size: 13px; word-break: break-all;">
+              <span style="color: #999;">链接：</span>
+              <a href="${escapeHtml(url)}" target="_blank" style="color: #0055b8; text-decoration: none;">${escapeHtml(shortUrl)}</a>
+            </p>
+          </div>
+        `;
+        container.appendChild(el);
+      });
+    }
+
+    // Modal-based editor for tools (with optional icon/image upload)
+    function showToolModal(show, item) {
+      const modal = document.getElementById('toolModal');
+      if (!modal) return;
+      if (show) {
+        modal.classList.add('show');
+        if (item) {
+          document.getElementById('toolId').value = item.id || '';
+          document.getElementById('toolName').value = item.name || '';
+          document.getElementById('toolUrl').value = item.url || '';
+          const preview = document.getElementById('toolImagePreview');
+          if (item.image) {
+            preview.src = item.image;
+            preview.style.display = 'block';
+          } else {
+            preview.style.display = 'none';
+          }
+        } else {
+          document.getElementById('toolId').value = '';
+          document.getElementById('toolName').value = '';
+          document.getElementById('toolUrl').value = '';
+          document.getElementById('toolImagePreview').style.display = 'none';
+        }
+      } else {
+        modal.classList.remove('show');
+      }
+    }
+
+    function openToolEditor(item) { showToolModal(true, item); }
+
+    document.getElementById && (() => {
+      const saveBtn = document.getElementById('toolSave');
+      if (saveBtn) saveBtn.addEventListener('click', async () => {
+        const id = document.getElementById('toolId').value;
+        const name = document.getElementById('toolName').value.trim();
+        const url = document.getElementById('toolUrl').value.trim();
+        const fileInput = document.getElementById('toolImage');
+        try {
+          const form = new FormData();
+          form.append('name', name);
+          form.append('url', url);
+          if (fileInput && fileInput.files && fileInput.files[0]) form.append('image', fileInput.files[0]);
+          let res;
+          if (id) {
+            res = await fetch(`/api/tools/${id}`, { method: 'PUT', body: form });
+          } else {
+            res = await fetch('/api/tools', { method: 'POST', body: form });
+          }
+          if (!res.ok) throw new Error('保存失败');
+          showToolModal(false);
+          document.getElementById('toolImage').value = '';
+          loadTools();
+        } catch (e) { console.error(e); alert(e.message || '保存失败'); }
+      });
+      const toolFile = document.getElementById('toolImage'); if (toolFile) toolFile.addEventListener('change', (ev)=>{ const f = ev.target.files && ev.target.files[0]; if (f) { document.getElementById('toolImagePreview').src = URL.createObjectURL(f); document.getElementById('toolImagePreview').style.display = 'block'; } else { document.getElementById('toolImagePreview').style.display = 'none'; } });
+      const cancelBtn = document.getElementById('toolCancel'); if (cancelBtn) cancelBtn.addEventListener('click', ()=>showToolModal(false));
+    })();
+
+    async function editTool(id) { try { const headers = getAuthHeader(); const res = await fetch(`/api/tools/${id}`, { headers }); if (!res.ok) throw new Error('无法获取'); const item = await res.json(); openToolEditor(item);} catch(e){console.error(e);alert('加载工具失败');} }
+
+    async function deleteTool(id) { 
+      const confirmed = await showConfirmDialog('确认删除', '确定要删除这个工具吗？此操作不可恢复。');
+      if (!confirmed) return;
+      
+      try { 
+        const headers = getAuthHeader(); 
+        const res = await fetch(`/api/tools/${id}`, { method: 'DELETE', headers }); 
+        if (!res.ok) throw new Error('删除失败'); 
+        
+        // 清除缓存
+        DataCache.clear('tools');
+        await loadTools(true); 
+        
+        Toast.show('工具已删除', 'success');
+      } catch(e){
+        console.error(e); 
+        Toast.show('删除失败：' + (e.message || ''), 'error'); 
+      } 
+    }
+
+    async function logout() {
+      const confirmed = await showConfirmDialog('确认退出', '确定要退出登录吗？未保存的数据将会丢失。');
+      if (!confirmed) return;
+      
+      // 清除所有会话数据
+      sessionStorage.removeItem('isLoggedIn');
+      sessionStorage.removeItem('adminName');
+      sessionStorage.removeItem('adminToken');
+      sessionStorage.removeItem('loginTime');
+      sessionStorage.removeItem('currentPage');
+      
+      // 清除缓存
+      DataCache.clearAll();
+      
+      Toast.show('已安全退出', 'success');
+      
+      setTimeout(() => {
+        window.location.href = 'login.html';
+      }, 1000);
+    }
+
+    // 初始化
+    document.addEventListener('DOMContentLoaded', () => {
+      // 检查认证状态
+      if (!checkAuth()) return;
+      
+      // 加载初始数据
+      loadInquiries();
+      
+      // 显示欢迎消息
+      const adminName = sessionStorage.getItem('adminName') || '欧阳波';
+      setTimeout(() => {
+        Toast.show(`欢迎回来，${adminName}！`, 'success', 3000);
+      }, 500);
+    });
+  </script>
+  
+  <!-- 引入增强功能模块 -->
+  <script src="../js/admin-enhanced.js"></script>
+</body>
+</html>
