@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>出海工具箱 - 中嘉锦铭国际贸易</title>
+  <meta name="description" content="提供海关编码查询、汇率换算、贸易术语、签证政策等实用工具，助力高效出海">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* 工具箱特有样式 */
+    .tools-section {
+      padding: 100px 0;
+      background: white;
+    }
+
+    .tools-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .tools-title {
+      font-size: 48px;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 16px;
+    }
+
+    .tools-desc {
+      font-size: 18px;
+      color: var(--gray);
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    /* 分类筛选 */
+    .tools-filter {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 40px;
+    }
+
+    .filter-btn {
+      padding: 8px 16px;
+      border: 2px solid var(--primary);
+      background: white;
+      color: var(--primary);
+      border-radius: var(--radius);
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    .filter-btn:hover,
+    .filter-btn.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    .tools-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 30px;
+    }
+
+    .tool-card {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 32px;
+      box-shadow: var(--shadow);
+      transition: all 0.3s ease;
+      text-align: center;
+      border: 1px solid var(--gray-light);
+      cursor: pointer;
+    }
+
+    .tool-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--primary);
+    }
+
+    .tool-icon {
+      width: 80px;
+      height: 80px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 24px;
+      color: white;
+    }
+
+    .tool-icon svg {
+      width: 40px;
+      height: 40px;
+    }
+
+    .tool-name {
+      font-size: 24px;
+      font-weight: 600;
+      color: var(--black);
+      margin-bottom: 16px;
+    }
+
+    .tool-description {
+      font-size: 16px;
+      color: var(--gray);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    .tool-category {
+      display: inline-block;
+      padding: 4px 12px;
+      background: var(--gray-light);
+      color: var(--gray);
+      border-radius: var(--radius-sm);
+      font-size: 12px;
+      font-weight: 500;
+      margin-bottom: 16px;
+    }
+
+    /* 工具详情弹窗 */
+    .tool-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .tool-modal.show {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      position: relative;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes slideIn {
+      from { transform: translateY(-50px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: none;
+      border: none;
+      font-size: 24px;
+      cursor: pointer;
+      color: var(--gray);
+      width: 32px;
+      height: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.3s ease;
+    }
+
+    .modal-close:hover {
+      background: var(--gray-light);
+      color: var(--black);
+    }
+
+    .modal-header {
+      text-align: center;
+      margin-bottom: 30px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--gray-light);
+    }
+
+    .modal-icon {
+      width: 100px;
+      height: 100px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 20px;
+      color: white;
+    }
+
+    .modal-icon svg {
+      width: 50px;
+      height: 50px;
+    }
+
+    .modal-title {
+      font-size: 32px;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 8px;
+    }
+
+    .modal-category {
+      display: inline-block;
+      padding: 6px 16px;
+      background: var(--primary);
+      color: white;
+      border-radius: var(--radius);
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .modal-body {
+      margin-bottom: 30px;
+    }
+
+    .modal-section {
+      margin-bottom: 24px;
+    }
+
+    .modal-section-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--black);
+      margin-bottom: 12px;
+    }
+
+    .modal-description {
+      font-size: 16px;
+      color: var(--gray);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .modal-install {
+      background: var(--gray-light);
+      padding: 16px;
+      border-radius: var(--radius);
+    }
+
+    .modal-install-item {
+      margin-bottom: 8px;
+      font-size: 14px;
+    }
+
+    .modal-install-item strong {
+      color: var(--black);
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+    }
+
+    .modal-btn {
+      padding: 12px 24px;
+      border-radius: var(--radius);
+      font-weight: 500;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .modal-btn-primary {
+      background: var(--primary);
+      color: white;
+      border: 2px solid var(--primary);
+    }
+
+    .modal-btn-primary:hover {
+      background: var(--primary-dark);
+      border-color: var(--primary-dark);
+    }
+
+    .modal-btn-secondary {
+      background: white;
+      color: var(--primary);
+      border: 2px solid var(--primary);
+    }
+
+    .modal-btn-secondary:hover {
+      background: var(--primary);
+      color: white;
+    }
+  </style>
+</head>
+<body>
+  <!-- 导航栏 -->
+  <nav class="navbar">
+    <div class="container navbar-inner">
+      <a href="index.html" class="logo">
+        <img src="images/logo.png" alt="中嘉锦铭国际贸易 Logo" class="logo-img">
+        <span class="logo-text">中嘉锦铭国际贸易</span>
+      </a>
+      
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link" data-i18n="nav.home">首页</a></li>
+        <li><a href="about.html" class="nav-link" data-i18n="nav.about">关于我们</a></li>
+        <li><a href="domestic.html" class="nav-link" data-i18n="nav.domestic">国内赋能</a></li>
+        <li><a href="overseas.html" class="nav-link" data-i18n="nav.overseas">海外促进</a></li>
+        <li><a href="keyway.html" class="nav-link" data-i18n="nav.keyway">KeyWay会员</a></li>
+        <li><a href="cases.html" class="nav-link" data-i18n="nav.cases">成功案例</a></li>
+        <li><a href="news.html" class="nav-link" data-i18n="nav.news">新闻中心</a></li>
+        <li><a href="tools.html" class="nav-link active" data-i18n="nav.tools">工具箱</a></li>
+        <li><a href="contact.html" class="nav-link" data-i18n="nav.contact">联系我们</a></li>
+      </ul>
+      
+      <div class="nav-actions">
+        <div class="lang-switch" onclick="toggleLanguage()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M2 12h20"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+          <span id="lang-text">EN</span>
+        </div>
+        <a href="contact.html" class="btn btn-primary" style="padding: 10px 20px; font-size: 14px;" data-i18n="nav.consult">立即咨询</a>
+      </div>
+      
+      <div class="mobile-menu-btn" onclick="toggleMobileMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 出海工具箱内容 -->
+  <section class="tools-section">
+    <div class="container">
+      <div class="tools-header">
+        <h1 class="tools-title">跨境工具箱</h1>
+        <p class="tools-desc">"跨境工具箱"通过"标准工具套餐 + 本地资源导航 + 专家配置指导"的三层模式，为企业提供从起步到深耕的全链路支持。</p>
+      </div>
+
+      <!-- 分类筛选 -->
+      <div class="tools-filter">
+        <button class="filter-btn active" data-category="all">全部工具</button>
+        <button class="filter-btn" data-category="communication">通讯工具</button>
+        <button class="filter-btn" data-category="social-media">社交媒体</button>
+        <button class="filter-btn" data-category="ecommerce">电商平台</button>
+        <button class="filter-btn" data-category="video-platform">视频平台</button>
+        <button class="filter-btn" data-category="ai-tools">AI工具</button>
+        <button class="filter-btn" data-category="search-engines">搜索引擎</button>
+        <button class="filter-btn" data-category="trade-tools">贸易工具</button>
+        <button class="filter-btn" data-category="professional-tools">专业工具</button>
+      </div>
+
+      <div class="tools-grid" id="toolsContainer">
+        <!-- 工具卡片将通过JavaScript动态加载 -->
+      </div>
+    </div>
+  </section>
+
+  <!-- 工具详情弹窗 -->
+  <div class="tool-modal" id="toolModal">
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeToolModal()">&times;</button>
+      <div class="modal-header">
+        <div class="modal-icon" id="modalIcon">
+          <!-- 图标将通过JavaScript动态加载 -->
+        </div>
+        <h2 class="modal-title" id="modalTitle"></h2>
+        <span class="modal-category" id="modalCategory"></span>
+      </div>
+      <div class="modal-body">
+        <div class="modal-section">
+          <h3 class="modal-section-title">工具简介</h3>
+          <p class="modal-description" id="modalDescription"></p>
+        </div>
+        <div class="modal-section">
+          <h3 class="modal-section-title">安装方式</h3>
+          <div class="modal-install" id="modalInstall">
+            <!-- 安装信息将通过JavaScript动态加载 -->
+          </div>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <a class="modal-btn modal-btn-primary" id="modalUrl" target="_blank">
+          访问官网
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M7 17L17 7"/>
+            <path d="M7 7h10v10"/>
+          </svg>
+        </a>
+        <button class="modal-btn modal-btn-secondary" onclick="closeToolModal()">关闭</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-logo">
+            <div class="logo-icon">L</div>
+            <span class="footer-logo-text">中嘉锦铭国际贸易</span>
+          </div>
+          <p class="footer-desc">中非经贸赋能平台与创新促进中心，为企业提供从0到1的出海全周期解决方案，助力中国企业走向世界。</p>
+        </div>
+
+        <div>
+          <h4 class="footer-title">快速链接</h4>
+          <ul class="footer-links">
+            <li><a href="index.html" class="footer-link">首页</a></li>
+            <li><a href="about.html" class="footer-link">关于我们</a></li>
+            <li><a href="domestic.html" class="footer-link">国内赋能服务</a></li>
+            <li><a href="overseas.html" class="footer-link">海外促进服务</a></li>
+            <li><a href="keyway.html" class="footer-link">KeyWay会员</a></li>
+            <li><a href="news.html" class="footer-link">新闻中心</a></li>
+            <li><a href="tools.html" class="footer-link">工具箱</a></li>
+            <li><a href="contact.html" class="footer-link">联系我们</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-title">服务项目</h4>
+          <ul class="footer-links">
+            <li><a href="domestic.html" class="footer-link">十大赋能中心</a></li>
+            <li><a href="overseas.html" class="footer-link">十大促进中心</a></li>
+            <li><a href="keyway.html" class="footer-link">KeyWay会员卡</a></li>
+            <li><a href="contact.html" class="footer-link">企业咨询服务</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-title">联系信息</h4>
+          <div class="footer-contact">
+            <div class="footer-contact-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+              <span>长沙市雨花区井湾子街道紫金大厦701</span>
+            </div>
+            <div class="footer-contact-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+              </svg>
+              <span>18874799625</span>
+            </div>
+            <div class="footer-contact-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+              <span>906725387@qq.com</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p class="footer-copyright">© 2024 中嘉锦铭国际贸易. 保留所有权利.</p>
+        <div class="footer-legal">
+          <a href="#">隐私政策</a>
+          <a href="#">服务条款</a>
+          <a href="admin/login.html">管理后台</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+
+    // 加载工具
+    let allTools = [];
+    let currentCategory = 'all';
+    
+    // 预设工具数据
+    const presetTools = [
+      {
+        id: 'customs-code',
+        name: '海关编码查询',
+        category: 'trade-tools',
+        summary: '快速查询商品海关编码，了解进出口税率和监管条件',
+        description: '提供全面的海关编码查询服务，帮助您准确了解商品的进出口税率、监管条件和申报要求。支持按商品名称、HS编码等多种方式查询。',
+        icon: 'customs',
+        url: 'http://www.customs.gov.cn'
+      },
+      {
+        id: 'currency-converter',
+        name: '实时汇率换算',
+        category: 'trade-tools',
+        summary: '实时获取全球主要货币汇率，支持多币种转换',
+        description: '提供实时汇率数据，支持全球主要货币之间的换算。帮助您在国际贸易中准确计算成本和收益。',
+        icon: 'currency',
+        url: 'https://www.xe.com'
+      },
+      {
+        id: 'trade-terms',
+        name: '贸易术语库',
+        category: 'trade-tools',
+        summary: '全面的国际贸易术语解释，包括Incoterms 2020',
+        description: '详细解释国际贸易中常用的术语和缩写，包括完整的Incoterms 2020规则，帮助您准确理解和使用贸易条款。',
+        icon: 'terms'
+      },
+      {
+        id: 'visa-policy',
+        name: '签证政策查询',
+        category: 'professional-tools',
+        summary: '查询各国商务签证政策和办理流程',
+        description: '提供各国商务签证的最新政策、办理流程、所需材料和注意事项，助您顺利办理出国手续。',
+        icon: 'visa'
+      },
+      {
+        id: 'wechat',
+        name: '微信国际版',
+        category: 'communication',
+        summary: '海外华人最常用的即时通讯工具',
+        description: '微信国际版，支持多语言界面，方便与全球华人及非洲合作伙伴沟通联系。',
+        icon: 'chat',
+        url: 'https://www.wechat.com'
+      },
+      {
+        id: 'whatsapp',
+        name: 'WhatsApp',
+        category: 'communication',
+        summary: '非洲最流行的即时通讯应用',
+        description: 'WhatsApp是非洲地区使用最广泛的即时通讯工具，几乎所有商务人士都在使用，是与非洲客户沟通的首选工具。',
+        icon: 'chat',
+        url: 'https://www.whatsapp.com'
+      },
+      {
+        id: 'linkedin',
+        name: 'LinkedIn',
+        category: 'social-media',
+        summary: '全球最大的职业社交平台',
+        description: '在LinkedIn上可以寻找非洲的商业伙伴、了解当地企业信息、建立专业的商务人脉网络。',
+        icon: 'social',
+        url: 'https://www.linkedin.com'
+      },
+      {
+        id: 'facebook',
+        name: 'Facebook',
+        category: 'social-media',
+        summary: '非洲使用最广泛的社交平台',
+        description: 'Facebook在非洲有极高的渗透率，是了解非洲市场动态、进行产品推广的重要渠道。',
+        icon: 'social',
+        url: 'https://www.facebook.com'
+      },
+      {
+        id: 'jumia',
+        name: 'Jumia',
+        category: 'ecommerce',
+        summary: '非洲最大的电商平台',
+        description: '被称为"非洲的亚马逊"，覆盖多个非洲国家，是进入非洲电商市场的重要渠道。',
+        icon: 'shop',
+        url: 'https://www.jumia.com'
+      },
+      {
+        id: 'kilimall',
+        name: 'Kilimall',
+        category: 'ecommerce',
+        summary: '东非领先的电商平台',
+        description: '由中国创业者创立的东非电商平台，主要覆盖肯尼亚、乌干达、尼日利亚等国家。',
+        icon: 'shop',
+        url: 'https://www.kilimall.co.ke'
+      },
+      {
+        id: 'youtube',
+        name: 'YouTube',
+        category: 'video-platform',
+        summary: '全球最大的视频平台',
+        description: '在YouTube上可以了解非洲市场趋势、学习出海经验、发布产品宣传视频。',
+        icon: 'video',
+        url: 'https://www.youtube.com'
+      },
+      {
+        id: 'tiktok',
+        name: 'TikTok',
+        category: 'video-platform',
+        summary: '在非洲快速崛起的短视频平台',
+        description: 'TikTok在非洲年轻群体中非常流行，是进行品牌营销和产品推广的新兴渠道。',
+        icon: 'video',
+        url: 'https://www.tiktok.com'
+      },
+      {
+        id: 'google',
+        name: 'Google搜索',
+        category: 'search-engines',
+        summary: '全球最大的搜索引擎',
+        description: '通过Google搜索可以了解非洲市场信息、寻找合作伙伴、研究竞争对手。',
+        icon: 'search',
+        url: 'https://www.google.com'
+      },
+      {
+        id: 'chatgpt',
+        name: 'ChatGPT',
+        category: 'ai-tools',
+        summary: '强大的AI助手',
+        description: '使用ChatGPT可以帮助撰写商务邮件、翻译文档、分析市场数据、提供出海策略建议。',
+        icon: 'ai',
+        url: 'https://chat.openai.com'
+      },
+      {
+        id: 'zoom',
+        name: 'Zoom',
+        category: 'professional-tools',
+        summary: '专业的视频会议工具',
+        description: '与非洲合作伙伴进行视频会议、线上演示和远程沟通的专业工具。',
+        icon: 'meeting',
+        url: 'https://zoom.us'
+      },
+      {
+        id: 'dhl',
+        name: 'DHL物流追踪',
+        category: 'trade-tools',
+        summary: '国际物流实时追踪',
+        description: '追踪您的货物在全球的运输状态，及时了解物流信息。',
+        icon: 'shipping',
+        url: 'https://www.dhl.com'
+      }
+    ];
+
+    async function loadTools() {
+      try {
+        const response = await fetch('http://localhost:3000/api/tools');
+        if (!response.ok) {
+          throw new Error('加载失败');
+        }
+        const backendTools = await response.json();
+        // 合并后台数据和预设数据
+        allTools = [...presetTools, ...backendTools];
+        renderTools();
+      } catch (error) {
+        console.error('加载工具失败:', error);
+        // 使用预设数据
+        allTools = presetTools;
+        renderTools();
+      }
+    }
+
+    // 渲染工具
+    function renderTools() {
+      const container = document.getElementById('toolsContainer');
+      const filteredTools = currentCategory === 'all' 
+        ? allTools 
+        : allTools.filter(tool => tool.category === currentCategory);
+
+      if (!filteredTools.length) {
+        container.innerHTML = '<p style="text-align: center; color: var(--gray);">该分类下暂无工具</p>';
+        return;
+      }
+
+      container.innerHTML = filteredTools.map(tool => `
+        <div class="tool-card" onclick="openToolModal('${tool.id}')">
+          <div class="tool-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              ${getToolIcon(tool.icon || tool.name)}
+            </svg>
+          </div>
+          <span class="tool-category">${getCategoryName(tool.category)}</span>
+          <h3 class="tool-name">${tool.name}</h3>
+          <p class="tool-description">${tool.summary || '实用工具，助您高效出海'}</p>
+        </div>
+      `).join('');
+    }
+
+    // 获取分类名称
+    function getCategoryName(category) {
+      const categoryNames = {
+        'communication': '通讯工具',
+        'social-media': '社交媒体',
+        'ecommerce': '电商平台',
+        'video-platform': '视频平台',
+        'ai-tools': 'AI工具',
+        'search-engines': '搜索引擎',
+        'trade-tools': '贸易工具',
+        'professional-tools': '专业工具'
+      };
+      return categoryNames[category] || category;
+    }
+
+    // 分类筛选
+    document.addEventListener('click', function(e) {
+      if (e.target.classList.contains('filter-btn')) {
+        // 更新激活状态
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        e.target.classList.add('active');
+        
+        // 更新当前分类并重新渲染
+        currentCategory = e.target.dataset.category;
+        renderTools();
+      }
+    });
+
+    // 打开工具详情弹窗
+    function openToolModal(toolId) {
+      const tool = allTools.find(t => t.id === toolId);
+      if (!tool) return;
+
+      // 更新弹窗内容
+      document.getElementById('modalIcon').innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${getToolIcon(tool.icon || tool.name)}</svg>`;
+      document.getElementById('modalTitle').textContent = tool.name;
+      document.getElementById('modalCategory').textContent = getCategoryName(tool.category);
+      document.getElementById('modalDescription').textContent = tool.description || tool.summary;
+      document.getElementById('modalUrl').href = tool.url || '#';
+
+      // 安装信息
+      const installInfo = tool.install || { pc: '无需安装，直接在浏览器中访问', mobile: '支持移动端浏览器访问' };
+      document.getElementById('modalInstall').innerHTML = `
+        <div class="modal-install-item"><strong>PC端：</strong>${installInfo.pc}</div>
+        <div class="modal-install-item"><strong>移动端：</strong>${installInfo.mobile}</div>
+      `;
+
+      // 显示弹窗
+      document.getElementById('toolModal').classList.add('show');
+      document.body.style.overflow = 'hidden';
+    }
+
+    // 关闭工具详情弹窗
+    function closeToolModal() {
+      document.getElementById('toolModal').classList.remove('show');
+      document.body.style.overflow = '';
+    }
+
+    // 点击弹窗外部关闭
+    document.getElementById('toolModal').addEventListener('click', function(e) {
+      if (e.target === this) {
+        closeToolModal();
+      }
+    });
+
+    // ESC键关闭弹窗
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape' && document.getElementById('toolModal').classList.contains('show')) {
+        closeToolModal();
+      }
+    });
+
+    // 获取工具图标SVG路径
+    function getToolIcon(name) {
+      const icons = {
+        'check-circle': '<path d="M9 12l2 2 4-4"/><path d="M21 12c-1 0-3-1-3-3s2-3 3-3"/><path d="M3 12c1 0 3-1 3-3s-2-3-3-3"/><path d="M12 3c0 1-1 3-3 3s-3-2-3-3"/><path d="M12 21c0-1-1-3-3-3s-3 2-3 3"/><circle cx="12" cy="12" r="3"/>',
+        'dollar-sign': '<circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 6v6"/><path d="M1 12h6m6 0h6"/><path d="M3.34 3.34l4.24 4.24m5.18 5.18l4.24 4.24"/><path d="M20.66 3.34l-4.24 4.24m-5.18 5.18l-4.24 4.24"/>',
+        'file-text': '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14,2 14,8 20,8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10,9 9,9 8,9"/>',
+        'globe': '<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>',
+        'tool': '<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>',
+        'users': '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
+        'bar-chart': '<line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/>',
+        'truck': '<rect x="1" y="3" width="15" height="13" rx="2" ry="2"/><polygon points="16,8 20,8 23,11 23,16 16,16 16,8"/><circle cx="5.5" cy="18.5" r="1.5"/><circle cx="18.5" cy="18.5" r="1.5"/>',
+        'shield': '<path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>',
+        'scale': '<path d="M16 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M2 16l3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2"/><path d="M17 7h2"/><path d="M19 7h.01"/>',
+        'credit-card': '<rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/>',
+        'languages': '<path d="M5 8l6 6"/><path d="M4 14l6-6 2-3"/><path d="M2 5h12"/><path d="M7 2h1"/><path d="M22 8l-6 6"/><path d="M20 14l-6-6-2-3"/><path d="M14 5h12"/><path d="M17 2h1"/>',
+        'video': '<polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/>',
+        // 通讯工具图标
+        'message-circle': '<path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/>',
+        'message-square': '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>',
+        // 社交媒体图标
+        'facebook': '<path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>',
+        'instagram': '<rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/>',
+        'linkedin': '<path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>',
+        // 地图导航图标
+        'map-pin': '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>',
+        // 电商平台图标
+        'shopping-bag': '<path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/>',
+        'shopping-cart': '<circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.66 12.42a2 2 0 0 0 2 1.58h9.78a2 2 0 0 0 1.95-1.57l1.65-7.43H5.12"/>',
+        // AI工具图标
+        'brain': '<path d="M9.5 2A2.5 2.5 0 0 1 12 4.5v3a2.5 2.5 0 0 1-5 0v-3A2.5 2.5 0 0 1 9.5 2Z"/><path d="M9.5 9A2.5 2.5 0 0 1 12 11.5v3a2.5 2.5 0 0 1-5 0v-3A2.5 2.5 0 0 1 9.5 9Z"/><path d="M4.5 7A2.5 2.5 0 0 1 7 9.5v5a2.5 2.5 0 0 1-5 0v-5A2.5 2.5 0 0 1 4.5 7Z"/><path d="M19.5 7A2.5 2.5 0 0 0 17 9.5v5a2.5 2.5 0 0 0 5 0v-5A2.5 2.5 0 0 0 19.5 7Z"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="M2 12h2"/><path d="M20 12h2"/>',
+        'bot': '<path d="M12 8V4H8"/><rect width="16" height="12" x="4" y="8" rx="2"/><path d="M2 14h2"/><path d="M20 14h2"/><path d="M15 13v2"/><path d="M9 13v2"/>',
+        // 搜索和邮箱图标
+        'search': '<circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>',
+        'mail': '<path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/>',
+        // 专业工具图标
+        'database': '<ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>',
+        'cpu': '<rect width="16" height="16" x="4" y="4" rx="2"/><rect width="6" height="6" x="9" y="9" rx="1"/><path d="M15 2v2"/><path d="M15 20v2"/><path d="M2 15h2"/><path d="M2 9h2"/><path d="M20 15h2"/><path d="M20 9h2"/><path d="M9 2v2"/><path d="M9 20v2"/>'
+      };
+      
+      // 根据工具名称返回对应的图标
+      const nameLower = name.toLowerCase();
+      if (nameLower.includes('海关') || nameLower.includes('编码')) return icons['check-circle'];
+      if (nameLower.includes('汇率') || nameLower.includes('货币')) return icons['dollar-sign'];
+      if (nameLower.includes('贸易') || nameLower.includes('术语')) return icons['file-text'];
+      if (nameLower.includes('签证') || nameLower.includes('政策')) return icons['globe'];
+      if (nameLower.includes('whatsapp')) return icons['message-circle'];
+      if (nameLower.includes('messenger')) return icons['message-square'];
+      if (nameLower.includes('telegram')) return icons['message-circle'];
+      if (nameLower.includes('facebook')) return icons['facebook'];
+      if (nameLower.includes('instagram')) return icons['instagram'];
+      if (nameLower.includes('linkedin')) return icons['linkedin'];
+      if (nameLower.includes('google maps') || nameLower.includes('地图')) return icons['map-pin'];
+      if (nameLower.includes('tiktok')) return icons['video'];
+      if (nameLower.includes('youtube')) return icons['video'];
+      if (nameLower.includes('阿里') || nameLower.includes('alibaba')) return icons['shopping-bag'];
+      if (nameLower.includes('亚马逊') || nameLower.includes('amazon')) return icons['shopping-cart'];
+      if (nameLower.includes('ebay')) return icons['shopping-bag'];
+      if (nameLower.includes('jumia') || nameLower.includes('ubuy')) return icons['shopping-cart'];
+      if (nameLower.includes('gemini')) return icons['brain'];
+      if (nameLower.includes('chatgpt')) return icons['bot'];
+      if (nameLower.includes('google')) return icons['search'];
+      if (nameLower.includes('gmail') || nameLower.includes('邮箱')) return icons['mail'];
+      if (nameLower.includes('抓包') || nameLower.includes('hunter')) return icons['database'];
+      if (nameLower.includes('海关数据') || nameLower.includes('datamyne')) return icons['database'];
+      if (nameLower.includes('外贸ai') || nameLower.includes('trademap')) return icons['cpu'];
+      if (nameLower.includes('伙伴') || nameLower.includes('供应商')) return icons['users'];
+      if (nameLower.includes('市场') || nameLower.includes('分析')) return icons['bar-chart'];
+      if (nameLower.includes('物流') || nameLower.includes('运输')) return icons['truck'];
+      if (nameLower.includes('保险') || nameLower.includes('保障')) return icons['shield'];
+      if (nameLower.includes('法律') || nameLower.includes('咨询')) return icons['scale'];
+      if (nameLower.includes('融资') || nameLower.includes('资金')) return icons['credit-card'];
+      if (nameLower.includes('翻译') || nameLower.includes('语言')) return icons['languages'];
+      if (nameLower.includes('会议') || nameLower.includes('视频')) return icons['video'];
+      
+      return icons['tool'];
+    }
+
+    // 页面加载完成后加载工具
+    loadTools();
+  </script>
+</body>
+</html>
