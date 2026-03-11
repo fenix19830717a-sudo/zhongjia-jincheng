@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>关于我们 - 中嘉锦铭国际贸易</title>
+  <meta name="description" content="了解中嘉锦铭国际贸易的平台背景、发展历程、核心定位和组织架构，我们致力于为企业提供从0到1的出海全周期解决方案。">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* 关于我们页面样式 */
+    .timeline-section {
+      padding: 80px 0;
+      background: white;
+    }
+    
+    .timeline {
+      position: relative;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 2px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--primary), var(--gold));
+    }
+    
+    .timeline-item {
+      position: relative;
+      padding: 30px 0;
+    }
+    
+    .timeline-item:nth-child(odd) .timeline-content {
+      margin-right: 50%;
+      padding-right: 60px;
+      text-align: right;
+    }
+    
+    .timeline-item:nth-child(even) .timeline-content {
+      margin-left: 50%;
+      padding-left: 60px;
+    }
+    
+    .timeline-dot {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 20px;
+      height: 20px;
+      background: var(--gold);
+      border-radius: 50%;
+      border: 4px solid white;
+      box-shadow: 0 0 0 4px var(--primary-light);
+    }
+    
+    .timeline-year {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--primary);
+      margin-bottom: 8px;
+    }
+    
+    .timeline-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--black);
+      margin-bottom: 12px;
+    }
+    
+    .timeline-desc {
+      font-size: 15px;
+      color: var(--gray);
+      line-height: 1.7;
+    }
+    
+    /* 组织架构 */
+    .org-section {
+      padding: 80px 0;
+      background: var(--gray-light);
+    }
+    
+    .org-chart {
+      background: white;
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      box-shadow: var(--shadow);
+    }
+    
+    .org-top {
+      text-align: center;
+      margin-bottom: 40px;
+    }
+    
+    .org-box {
+      display: inline-block;
+      padding: 16px 40px;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: white;
+      font-size: 18px;
+      font-weight: 600;
+      border-radius: var(--radius);
+    }
+    
+    .org-level {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 30px;
+      flex-wrap: wrap;
+    }
+    
+    .org-item {
+      padding: 14px 28px;
+      background: var(--primary-light);
+      color: var(--primary);
+      font-size: 15px;
+      font-weight: 500;
+      border-radius: var(--radius);
+    }
+    
+    .org-item.highlight {
+      background: linear-gradient(135deg, var(--gold), var(--gold-dark));
+      color: white;
+    }
+    
+    .org-bottom {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 20px;
+    }
+    
+    .org-col {
+      text-align: center;
+    }
+    
+    .org-col-title {
+      padding: 12px;
+      background: var(--primary);
+      color: white;
+      font-size: 14px;
+      font-weight: 600;
+      border-radius: var(--radius) var(--radius) 0 0;
+    }
+    
+    .org-col-items {
+      background: white;
+      border: 1px solid var(--gray-light);
+      border-top: none;
+      border-radius: 0 0 var(--radius) var(--radius);
+      padding: 12px;
+    }
+    
+    .org-col-item {
+      padding: 8px;
+      font-size: 13px;
+      color: var(--gray);
+      border-bottom: 1px solid var(--gray-light);
+    }
+    
+    .org-col-item:last-child {
+      border-bottom: none;
+    }
+    
+    /* 核心团队 */
+    .team-section {
+      padding: 80px 0;
+      background: white;
+    }
+    
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 30px;
+    }
+    
+    .team-card {
+      text-align: center;
+    }
+    
+    .team-avatar {
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin: 0 auto 20px;
+      box-shadow: var(--shadow);
+    }
+    
+    .team-name {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--black);
+      margin-bottom: 8px;
+    }
+    
+    .team-role {
+      font-size: 14px;
+      color: var(--primary);
+      margin-bottom: 12px;
+    }
+    
+    .team-desc {
+      font-size: 13px;
+      color: var(--gray);
+      line-height: 1.6;
+    }
+    
+    /* 数据统计 */
+    .stats-section {
+      padding: 80px 0;
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+    }
+    
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 40px;
+    }
+    
+    .stat-item {
+      text-align: center;
+    }
+    
+    .stat-number {
+      font-size: 56px;
+      font-weight: 700;
+      color: var(--gold);
+      margin-bottom: 12px;
+    }
+    
+    .stat-label {
+      font-size: 16px;
+      color: rgba(255, 255, 255, 0.8);
+    }
+    
+    @media (max-width: 1024px) {
+      .timeline::before {
+        left: 20px;
+      }
+      
+      .timeline-item:nth-child(odd) .timeline-content,
+      .timeline-item:nth-child(even) .timeline-content {
+        margin-left: 60px;
+        margin-right: 0;
+        padding-left: 20px;
+        padding-right: 0;
+        text-align: left;
+      }
+      
+      .timeline-dot {
+        left: 20px;
+      }
+      
+      .org-bottom {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .team-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .environment-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .service-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .org-bottom {
+        grid-template-columns: 1fr;
+      }
+      
+      .team-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .environment-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .service-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .stat-number {
+        font-size: 40px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- 导航栏 -->
+  <nav class="navbar scrolled">
+    <div class="container navbar-inner">
+      <a href="index.html" class="logo">
+        <img src="images/logo.png" alt="中嘉锦铭国际贸易 Logo" class="logo-img">
+        <span class="logo-text" style="color: var(--black);">中嘉锦铭国际贸易</span>
+      </a>
+      
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link" style="color: var(--black);">首页</a></li>
+        <li><a href="about.html" class="nav-link active" style="color: var(--black);">关于我们</a></li>
+        <li><a href="domestic.html" class="nav-link" style="color: var(--black);">国内赋能</a></li>
+        <li><a href="overseas.html" class="nav-link" style="color: var(--black);">海外促进</a></li>
+        <li><a href="keyway.html" class="nav-link" style="color: var(--black);">KeyWay会员</a></li>
+        <li><a href="cases.html" class="nav-link" style="color: var(--black);">成功案例</a></li>
+        <li><a href="contact.html" class="nav-link" style="color: var(--black);">联系我们</a></li>
+      </ul>
+      
+      <div class="nav-actions">
+        <div class="lang-switch" style="background: var(--gray-light); color: var(--black);">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M2 12h20"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+          <span>EN</span>
+        </div>
+        <a href="contact.html" class="btn btn-primary" style="padding: 10px 20px; font-size: 14px;">立即咨询</a>
+      </div>
+      
+      <div class="mobile-menu-btn" onclick="toggleMobileMenu()">
+        <span style="background: var(--black);"></span>
+        <span style="background: var(--black);"></span>
+        <span style="background: var(--black);"></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 页面标题 -->
+  <header class="page-header" style="padding-top: 140px;">
+    <div class="container page-header-content">
+      <span class="page-tag">ABOUT US</span>
+      <h1 class="page-title">关于我们</h1>
+      <p class="page-subtitle">了解中嘉锦铭国际贸易的平台背景、发展历程与核心定位</p>
+    </div>
+  </header>
+
+  <!-- 平台简介 -->
+  <section class="timeline-section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">发展历程</span>
+        <h2 class="section-title">平台发展历程</h2>
+        <p class="section-desc">服务国家战略，助力企业出海</p>
+      </div>
+      
+      <div class="timeline">
+        <div class="timeline-item reveal">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <img src="images/meeting-1.jpg" alt="一带一路倡议发布相关图片" loading="lazy" style="width: 100%; height: 200px; object-fit: cover; border-radius: var(--radius); margin-bottom: 20px;">
+            <div class="timeline-year">2015年</div>
+            <h3 class="timeline-title">一带一路倡议发布</h3>
+            <p class="timeline-desc">国家发改委、外交部、商务部联合发布《推动共建丝绸之路经济带和21世纪海上丝绸之路的愿景与行动》，为企业出海指明方向。</p>
+          </div>
+        </div>
+        
+        <div class="timeline-item reveal">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <img src="images/event-1.jpg" alt="中非经贸博览会相关图片" loading="lazy" style="width: 100%; height: 200px; object-fit: cover; border-radius: var(--radius); margin-bottom: 20px;">
+            <div class="timeline-year">2019年</div>
+            <h3 class="timeline-title">中非经贸博览会落户湖南</h3>
+            <p class="timeline-desc">首届中非经贸博览会在长沙举办，并长期落户湖南，为湖南企业开拓非洲市场提供了重要平台。</p>
+          </div>
+        </div>
+        
+        <div class="timeline-item reveal">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <img src="images/meeting-2.jpg" alt="中非经贸深度合作先行区相关图片" loading="lazy" style="width: 100%; height: 200px; object-fit: cover; border-radius: var(--radius); margin-bottom: 20px;">
+            <div class="timeline-year">2024年</div>
+            <h3 class="timeline-title">中非经贸深度合作先行区落地</h3>
+            <p class="timeline-desc">国务院同意实施《中非经贸深度合作先行区建设总体方案》，并落地湖南，为企业提供更加优越的政策环境。</p>
+          </div>
+        </div>
+        
+        <div class="timeline-item reveal">
+          <div class="timeline-dot"></div>
+          <div class="timeline-content">
+            <img src="images/event-2.jpg" alt="中嘉锦铭国际贸易成立相关图片" loading="lazy" style="width: 100%; height: 200px; object-fit: cover; border-radius: var(--radius); margin-bottom: 20px;">
+            <div class="timeline-year">2024年</div>
+            <h3 class="timeline-title">中嘉锦铭国际贸易成立</h3>
+            <p class="timeline-desc">湖南中嘉锦铭企业服务有限责任公司正式成立，以帮助企业找客户为核心价值，布局一带一路沿线服务网络。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 核心定位 -->
+  <section class="org-section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">组织架构</span>
+        <h2 class="section-title">平台组织架构</h2>
+        <p class="section-desc">完善的组织架构，专业的服务团队</p>
+      </div>
+      
+      <div class="org-chart reveal">
+        <div class="org-top">
+          <div class="org-box">中嘉锦铭国际贸易</div>
+        </div>
+        
+        <div class="org-level">
+          <div class="org-item highlight">专家智库</div>
+          <div class="org-item highlight">产业联盟</div>
+          <div class="org-item highlight">战略合作</div>
+          <div class="org-item highlight">招商联盟</div>
+        </div>
+        
+        <div class="org-bottom">
+          <div class="org-col">
+            <div class="org-col-title">国内服务站</div>
+            <div class="org-col-items">
+              <div class="org-col-item">地级市站点</div>
+              <div class="org-col-item">产业聚集区</div>
+              <div class="org-col-item">十大赋能中心</div>
+            </div>
+          </div>
+          <div class="org-col">
+            <div class="org-col-title">海外服务站</div>
+            <div class="org-col-items">
+              <div class="org-col-item">一带一路国家</div>
+              <div class="org-col-item">中非贸易国家</div>
+              <div class="org-col-item">十大促进中心</div>
+            </div>
+          </div>
+          <div class="org-col">
+            <div class="org-col-title">专业委员会</div>
+            <div class="org-col-items">
+              <div class="org-col-item">跨境金融专委会</div>
+              <div class="org-col-item">海外税务专委会</div>
+              <div class="org-col-item">国际仲裁专委会</div>
+            </div>
+          </div>
+          <div class="org-col">
+            <div class="org-col-title">平台管理部</div>
+            <div class="org-col-items">
+              <div class="org-col-item">物业空间</div>
+              <div class="org-col-item">职能中心</div>
+              <div class="org-col-item">平台运维</div>
+            </div>
+          </div>
+          <div class="org-col">
+            <div class="org-col-title">会员管理部</div>
+            <div class="org-col-items">
+              <div class="org-col-item">会员发展</div>
+              <div class="org-col-item">会员管理</div>
+              <div class="org-col-item">会员服务</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 公司环境 -->
+  <section class="environment-section" style="padding: 80px 0; background: var(--gray-light);">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">公司环境</span>
+        <h2 class="section-title">办公环境</h2>
+        <p class="section-desc">现代化的办公环境，专业的服务氛围</p>
+      </div>
+      
+      <div class="environment-grid" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 30px; margin-top: 50px;">
+        <div class="environment-item reveal">
+          <img src="images/office-1.jpg" alt="现代化办公空间" loading="lazy" style="width: 100%; height: 300px; object-fit: cover; border-radius: var(--radius-lg); box-shadow: var(--shadow);">
+        </div>
+        <div class="environment-item reveal">
+          <img src="images/office-2.jpg" alt="团队协作区域" loading="lazy" style="width: 100%; height: 300px; object-fit: cover; border-radius: var(--radius-lg); box-shadow: var(--shadow);">
+        </div>
+        <div class="environment-item reveal">
+          <img src="images/office-3.jpg" alt="会议室设施" loading="lazy" style="width: 100%; height: 300px; object-fit: cover; border-radius: var(--radius-lg); box-shadow: var(--shadow);">
+        </div>
+        <div class="environment-item reveal">
+          <img src="images/office-4.jpg" alt="工作场景" loading="lazy" style="width: 100%; height: 300px; object-fit: cover; border-radius: var(--radius-lg); box-shadow: var(--shadow);">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 数据统计 -->
+  <section class="stats-section">
+    <div class="container">
+      <div class="stats-grid">
+        <div class="stat-item reveal">
+          <div class="stat-number">10+</div>
+          <div class="stat-label">国内省份覆盖</div>
+        </div>
+        <div class="stat-item reveal">
+          <div class="stat-number">20+</div>
+          <div class="stat-label">海外国家布局</div>
+        </div>
+        <div class="stat-item reveal">
+          <div class="stat-number">1000+</div>
+          <div class="stat-label">服务客户数量</div>
+        </div>
+        <div class="stat-item reveal">
+          <div class="stat-number">50+</div>
+          <div class="stat-label">合作伙伴</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 服务优势 -->
+  <section class="service-section" style="padding: 80px 0; background: white;">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">服务优势</span>
+        <h2 class="section-title">我们的服务优势</h2>
+        <p class="section-desc">专业的服务团队，丰富的行业经验</p>
+      </div>
+      
+      <div class="service-grid" style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 40px; margin-top: 50px;">
+        <div class="service-item reveal" style="text-align: center;">
+          <img src="images/service-1.jpg" alt="专业咨询服务" loading="lazy" style="width: 100%; height: 250px; object-fit: cover; border-radius: var(--radius-lg); box-shadow: var(--shadow); margin-bottom: 20px;">
+          <h3 style="font-size: 20px; font-weight: 600; color: var(--black); margin-bottom: 12px;">专业咨询</h3>
+          <p style="font-size: 14px; color: var(--gray); line-height: 1.6;">资深行业专家提供一对一咨询服务</p>
+        </div>
+        <div class="service-item reveal" style="text-align: center;">
+          <img src="images/service-2.jpg" alt="全方位解决方案" loading="lazy" style="width: 100%; height: 250px; object-fit: cover; border-radius: var(--radius-lg); box-shadow: var(--shadow); margin-bottom: 20px;">
+          <h3 style="font-size: 20px; font-weight: 600; color: var(--black); margin-bottom: 12px;">全方位解决方案</h3>
+          <p style="font-size: 14px; color: var(--gray); line-height: 1.6;">从市场调研到落地实施的全程服务</p>
+        </div>
+        <div class="service-item reveal" style="text-align: center;">
+          <img src="images/service-3.jpg" alt="持续跟踪服务" loading="lazy" style="width: 100%; height: 250px; object-fit: cover; border-radius: var(--radius-lg); box-shadow: var(--shadow); margin-bottom: 20px;">
+          <h3 style="font-size: 20px; font-weight: 600; color: var(--black); margin-bottom: 12px;">持续跟踪</h3>
+          <p style="font-size: 14px; color: var(--gray); line-height: 1.6;">项目实施后持续提供跟踪和优化服务</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 核心团队 - 暂时注释
+  <section class="team-section">
+    <div class="container">
+      <div class="section-header reveal">
+        <span class="section-tag">核心团队</span>
+        <h2 class="section-title">专业团队</h2>
+        <p class="section-desc">汇聚行业精英，为企业提供专业服务</p>
+      </div>
+      
+      <div class="team-grid">
+        <div class="team-card reveal">
+          <img src="images/team-1.jpg" alt="张总 - 创始人 & CEO" class="team-avatar" loading="lazy">
+          <h3 class="team-name">张总</h3>
+          <p class="team-role">创始人 & CEO</p>
+          <p class="team-desc">20年国际贸易经验，深度了解中非经贸合作</p>
+        </div>
+        <div class="team-card reveal">
+          <img src="images/team-2.jpg" alt="李总 - 联合创始人 & COO" class="team-avatar" loading="lazy">
+          <h3 class="team-name">李总</h3>
+          <p class="team-role">联合创始人 & COO</p>
+          <p class="team-desc">资深企业运营专家，擅长跨国企业管理</p>
+        </div>
+        <div class="team-card reveal">
+          <img src="images/team-3.jpg" alt="王总 - 合伙人 & 法务总监" class="team-avatar" loading="lazy">
+          <h3 class="team-name">王总</h3>
+          <p class="team-role">合伙人 & 法务总监</p>
+          <p class="team-desc">国际法律专家，专注涉外法律服务</p>
+        </div>
+        <div class="team-card reveal">
+          <img src="images/team-4.jpg" alt="陈总 - 合伙人 & 市场总监" class="team-avatar" loading="lazy">
+          <h3 class="team-name">陈总</h3>
+          <p class="team-role">合伙人 & 市场总监</p>
+          <p class="team-desc">市场营销专家，深耕非洲市场多年</p>
+        </div>
+      </div>
+    </div>
+  </section>
+  -->
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-logo">
+            <div class="logo-icon">L</div>
+            <span class="footer-logo-text">中嘉锦铭国际贸易</span>
+          </div>
+          <p class="footer-desc">中非经贸赋能平台与创新促进中心，为企业提供从0到1的出海全周期解决方案，助力中国企业走向世界。</p>
+        </div>
+        
+        <div>
+          <h4 class="footer-title">快速链接</h4>
+          <ul class="footer-links">
+            <li><a href="index.html" class="footer-link">首页</a></li>
+            <li><a href="about.html" class="footer-link">关于我们</a></li>
+            <li><a href="domestic.html" class="footer-link">国内赋能服务</a></li>
+            <li><a href="overseas.html" class="footer-link">海外促进服务</a></li>
+            <li><a href="keyway.html" class="footer-link">KeyWay会员</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="footer-title">服务项目</h4>
+          <ul class="footer-links">
+            <li><a href="domestic.html" class="footer-link">十大赋能中心</a></li>
+            <li><a href="overseas.html" class="footer-link">十大促进中心</a></li>
+            <li><a href="keyway.html" class="footer-link">KeyWay会员卡</a></li>
+            <li><a href="contact.html" class="footer-link">企业咨询服务</a></li>
+          </ul>
+        </div>
+        
+        <div>
+          <h4 class="footer-title">联系信息</h4>
+          <div class="footer-contact">
+            <div class="footer-contact-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+              <span>长沙市雨花区井湾子街道紫金大厦701</span>
+            </div>
+            <div class="footer-contact-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+              </svg>
+              <span>18874799625</span>
+            </div>
+            <div class="footer-contact-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+              <span>906725387@qq.com</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="footer-bottom">
+        <p class="footer-copyright">© 2024 中嘉锦铭国际贸易. 保留所有权利.</p>
+        <div class="footer-legal">
+          <a href="#">隐私政策</a>
+          <a href="#">服务条款</a>
+          <a href="admin/login.html">管理后台</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    function toggleMobileMenu() {
+      document.querySelector('.nav-menu').classList.toggle('active');
+    }
+  </script>
+</body>
+</html>
