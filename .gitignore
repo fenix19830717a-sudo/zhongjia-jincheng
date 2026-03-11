@@ -1,0 +1,42 @@
+# Node.js dependencies
+node_modules/
+
+# Logs
+logs/
+*.log
+
+# Data files
+data/
+
+# Backups
+backups/
+
+# Environment variables
+.env
+
+# Build files
+build/
+dist/
+
+# IDE files
+.idea/
+.vscode/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+
+# Batch files (Windows)
+*.bat
+
+# Deployment scripts
+deploy-*.sh
+setup-server.sh
+
+# Server logs
+server.log
+frontend.log
