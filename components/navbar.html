@@ -1,0 +1,39 @@
+<!-- 导航栏组件 - 标准化版本 -->
+<nav class="navbar">
+  <div class="container navbar-inner">
+    <a href="index.html" class="logo">
+      <img src="images/logo.png" alt="中嘉锦铭国际贸易 Logo" class="logo-img" style="height: 40px; width: auto;">
+      <span class="logo-text">中嘉锦铭国际贸易</span>
+    </a>
+    
+    <ul class="nav-menu">
+      <li><a href="index.html" class="nav-link" data-i18n="nav.home">首页</a></li>
+      <li><a href="about.html" class="nav-link" data-i18n="nav.about">关于我们</a></li>
+      <li><a href="domestic.html" class="nav-link" data-i18n="nav.domestic">国内赋能</a></li>
+      <li><a href="overseas.html" class="nav-link" data-i18n="nav.overseas">海外促进</a></li>
+      <li><a href="keyway.html" class="nav-link" data-i18n="nav.keyway">KeyWay会员</a></li>
+      <li><a href="cases.html" class="nav-link" data-i18n="nav.cases">成功案例</a></li>
+      <li><a href="news.html" class="nav-link" data-i18n="nav.news">新闻中心</a></li>
+      <li><a href="tools.html" class="nav-link" data-i18n="nav.tools">工具箱</a></li>
+      <li><a href="contact.html" class="nav-link" data-i18n="nav.contact">联系我们</a></li>
+    </ul>
+    
+    <div class="nav-actions">
+      <div class="lang-switch" onclick="toggleLanguage()">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M2 12h20"/>
+          <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+        </svg>
+        <span id="lang-text">EN</span>
+      </div>
+      <a href="contact.html" class="btn btn-primary" style="padding: 10px 20px; font-size: 14px;" data-i18n="nav.consult">立即咨询</a>
+    </div>
+    
+    <div class="mobile-menu-btn" onclick="toggleMobileMenu()">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+</nav>
