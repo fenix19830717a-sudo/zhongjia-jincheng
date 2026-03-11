@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>新闻中心 - 中嘉锦铭国际贸易</title>
+  <meta name="description" content="及时了解行业动态、政策资讯和平台最新消息，掌握出海商机">
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    /* 新闻中心特有样式 */
+    .news-section {
+      padding: 100px 0;
+      background: white;
+    }
+
+    .news-header {
+      text-align: center;
+      margin-bottom: 60px;
+    }
+
+    .news-title {
+      font-size: 48px;
+      font-weight: 700;
+      color: var(--black);
+      margin-bottom: 16px;
+    }
+
+    .news-desc {
+      font-size: 18px;
+      color: var(--gray);
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
+    }
+
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 30px;
+    }
+
+    .news-card {
+      background: white;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .news-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .news-image {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .news-content {
+      padding: 24px;
+    }
+
+    .news-date {
+      font-size: 14px;
+      color: var(--primary);
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+
+    .news-card-title {
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--black);
+      margin-bottom: 12px;
+      line-height: 1.4;
+    }
+
+    .news-summary {
+      font-size: 16px;
+      color: var(--gray);
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .news-link {
+      color: var(--primary);
+      font-weight: 500;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .news-link:hover {
+      color: var(--primary-dark);
+    }
+
+    .news-link svg {
+      width: 16px;
+      height: 16px;
+    }
+  </style>
+</head>
+<body>
+  <!-- 导航栏 -->
+  <nav class="navbar">
+    <div class="container navbar-inner">
+      <a href="index.html" class="logo">
+        <img src="images/logo.png" alt="中嘉锦铭国际贸易 Logo" class="logo-img">
+        <span class="logo-text">中嘉锦铭国际贸易</span>
+      </a>
+      
+      <ul class="nav-menu">
+        <li><a href="index.html" class="nav-link" data-i18n="nav.home">首页</a></li>
+        <li><a href="about.html" class="nav-link" data-i18n="nav.about">关于我们</a></li>
+        <li><a href="domestic.html" class="nav-link" data-i18n="nav.domestic">国内赋能</a></li>
+        <li><a href="overseas.html" class="nav-link" data-i18n="nav.overseas">海外促进</a></li>
+        <li><a href="keyway.html" class="nav-link" data-i18n="nav.keyway">KeyWay会员</a></li>
+        <li><a href="cases.html" class="nav-link" data-i18n="nav.cases">成功案例</a></li>
+        <li><a href="news.html" class="nav-link active" data-i18n="nav.news">新闻中心</a></li>
+        <li><a href="tools.html" class="nav-link" data-i18n="nav.tools">工具箱</a></li>
+        <li><a href="contact.html" class="nav-link" data-i18n="nav.contact">联系我们</a></li>
+      </ul>
+      
+      <div class="nav-actions">
+        <div class="lang-switch" onclick="toggleLanguage()">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M2 12h20"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+          <span id="lang-text">EN</span>
+        </div>
+        <a href="contact.html" class="btn btn-primary" style="padding: 10px 20px; font-size: 14px;" data-i18n="nav.consult">立即咨询</a>
+      </div>
+      
+      <div class="mobile-menu-btn" onclick="toggleMobileMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 新闻中心内容 -->
+  <section class="news-section">
+    <div class="container">
+      <div class="news-header">
+        <h1 class="news-title">新闻中心</h1>
+        <p class="news-desc">及时了解行业动态、政策资讯和平台最新消息，掌握出海商机</p>
+      </div>
+
+      <div class="news-grid" id="newsContainer">
+        <!-- 新闻卡片将通过JavaScript动态加载 -->
+      </div>
+    </div>
+  </section>
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-logo">
+            <div class="logo-icon">L</div>
+            <span class="footer-logo-text">中嘉锦铭国际贸易</span>
+          </div>
+          <p class="footer-desc">中非经贸赋能平台与创新促进中心，为企业提供从0到1的出海全周期解决方案，助力中国企业走向世界。</p>
+        </div>
+
+        <div>
+          <h4 class="footer-title">快速链接</h4>
+          <ul class="footer-links">
+            <li><a href="index.html" class="footer-link">首页</a></li>
+            <li><a href="about.html" class="footer-link">关于我们</a></li>
+            <li><a href="domestic.html" class="footer-link">国内赋能服务</a></li>
+            <li><a href="overseas.html" class="footer-link">海外促进服务</a></li>
+            <li><a href="keyway.html" class="footer-link">KeyWay会员</a></li>
+            <li><a href="news.html" class="footer-link">新闻中心</a></li>
+            <li><a href="tools.html" class="footer-link">工具箱</a></li>
+            <li><a href="contact.html" class="footer-link">联系我们</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-title">服务项目</h4>
+          <ul class="footer-links">
+            <li><a href="domestic.html" class="footer-link">十大赋能中心</a></li>
+            <li><a href="overseas.html" class="footer-link">十大促进中心</a></li>
+            <li><a href="keyway.html" class="footer-link">KeyWay会员卡</a></li>
+            <li><a href="contact.html" class="footer-link">企业咨询服务</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-title">联系信息</h4>
+          <div class="footer-contact">
+            <div class="footer-contact-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                <circle cx="12" cy="10" r="3"/>
+              </svg>
+              <span>长沙市雨花区井湾子街道紫金大厦701</span>
+            </div>
+            <div class="footer-contact-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+              </svg>
+              <span>18874799625</span>
+            </div>
+            <div class="footer-contact-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+              <span>906725387@qq.com</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p class="footer-copyright">© 2024 中嘉锦铭国际贸易. 保留所有权利.</p>
+        <div class="footer-legal">
+          <a href="#">隐私政策</a>
+          <a href="#">服务条款</a>
+          <a href="admin/login.html">管理后台</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    // 移动端菜单
+    function toggleMobileMenu() {
+      document.querySelector('.nav-menu').classList.toggle('active');
+    }
+
+    // 加载新闻
+    async function loadNews() {
+      try {
+        const response = await fetch('http://localhost:3000/api/news');
+        if (!response.ok) {
+          throw new Error('加载失败');
+        }
+        const news = await response.json();
+        const container = document.getElementById('newsContainer');
+
+        if (!news.length) {
+          container.innerHTML = '<p style="text-align: center; color: var(--gray);">暂无新闻</p>';
+          return;
+        }
+
+        container.innerHTML = news.map(item => `
+          <div class="news-card" onclick="showNewsDetail('${item.id}')">
+            <img src="${item.image || 'images/placeholder.png'}" alt="${item.title}" class="news-image">
+            <div class="news-content">
+              <div class="news-date">${new Date(item.createdAt).toLocaleDateString('zh-CN')}</div>
+              <h3 class="news-card-title">${item.title}</h3>
+              <p class="news-summary">${(item.summary || item.body || '').slice(0, 100)}${(item.summary || item.body || '').length > 100 ? '...' : ''}</p>
+              <a href="#" class="news-link" onclick="event.stopPropagation(); showNewsDetail('${item.id}')">
+                查看详情
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M7 17L17 7"/>
+                  <path d="M7 7h10v10"/>
+                </svg>
+              </a>
+            </div>
+          </div>
+        `).join('');
+      } catch (error) {
+        console.error('加载新闻失败:', error);
+        document.getElementById('newsContainer').innerHTML = '<p style="text-align: center; color: var(--gray);">加载失败，请稍后重试</p>';
+      }
+    }
+
+    // 显示新闻详情弹窗
+    async function showNewsDetail(id) {
+      try {
+        const response = await fetch(`http://localhost:3000/api/news/${id}`);
+        if (!response.ok) throw new Error('加载失败');
+        const news = await response.json();
+        
+        // 创建弹窗
+        const modal = document.createElement('div');
+        modal.style.cssText = `
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0,0,0,0.8);
+          z-index: 10000;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 20px;
+          overflow-y: auto;
+        `;
+        
+        modal.innerHTML = `
+          <div style="
+            background: white;
+            border-radius: 16px;
+            max-width: 800px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            position: relative;
+            animation: slideIn 0.3s ease;
+          ">
+            <button onclick="this.closest('.news-modal').remove()" style="
+              position: absolute;
+              top: 20px;
+              right: 20px;
+              width: 40px;
+              height: 40px;
+              border-radius: 50%;
+              border: none;
+              background: rgba(0,0,0,0.1);
+              cursor: pointer;
+              font-size: 20px;
+              z-index: 10;
+            ">×</button>
+            
+            ${news.image ? `<img src="${news.image}" style="width: 100%; height: 300px; object-fit: cover; border-radius: 16px 16px 0 0;">` : ''}
+            
+            <div style="padding: 40px;">
+              <div style="color: var(--primary); font-size: 14px; font-weight: 500; margin-bottom: 12px;">
+                ${new Date(news.createdAt).toLocaleDateString('zh-CN')}
+              </div>
+              <h2 style="font-size: 28px; font-weight: 700; color: var(--black); margin-bottom: 20px; line-height: 1.4;">
+                ${news.title}
+              </h2>
+              <div style="font-size: 16px; color: var(--gray); line-height: 1.8;">
+                ${news.body || news.summary || '暂无内容'}
+              </div>
+            </div>
+          </div>
+        `;
+        
+        modal.className = 'news-modal';
+        document.body.appendChild(modal);
+        
+        // 点击背景关闭
+        modal.addEventListener('click', (e) => {
+          if (e.target === modal) modal.remove();
+        });
+        
+      } catch (error) {
+        console.error('加载详情失败:', error);
+        alert('加载详情失败，请稍后重试');
+      }
+    }
+    
+    // 添加动画样式
+    const style = document.createElement('style');
+    style.textContent = `
+      @keyframes slideIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to { opacity: 1; transform: translateY(0); }
+      }
+    `;
+    document.head.appendChild(style);
+
+    // 页面加载完成后加载新闻
+    loadNews();
+  </script>
+</body>
+</html>
